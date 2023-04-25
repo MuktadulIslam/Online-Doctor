@@ -6,52 +6,50 @@ return (
 <>
      <li className="nav-item">
           <Link className="nav-link collapsed" to="">
-               <i className="bi bi-box-arrow-in-right"></i>
+               <i className="bi bi-person-circle"></i>
                <span>Profile</span>
           </Link>
      </li>
-     {/* <!-- End "Login" Page Nav --> */}
+
 
      <li className="nav-item">
           <Link className="nav-link collapsed" to="">
-               <i className="bi bi-question-octagon"></i>
+               <i className="bi bi-x-diamond"></i>
                <span>Edit Information</span>
           </Link>
      </li>
-     {/* <!-- End "Forget Password" Page Nav --> */}
+
 
      <li className="nav-item">
           <Link className="nav-link collapsed" to="">
-               <i className="bi bi-person-plus"></i>
-               <span>Remove Account</span>
+               <i className="bi bi-x-square"></i>
+               <span>Remove User Account</span>
           </Link>
      </li>
-     {/* <!-- End "Restore User Account" Page Nav --> */}
+
 
      <li className="nav-item">
           <Link className="nav-link collapsed" to="">
-               <i className="bi bi-question-octagon"></i>
+               <i className="bi bi-box-seam"></i>
                <span>Complain Box</span>
           </Link>
      </li>
-     {/* <!-- End "Forget Password" Page Nav --> */}
+
 
      <li className="nav-item">
           <Link className="nav-link collapsed" to="">
-               <i className="bi bi-person-plus"></i>
-               <span>Update Disease</span>
+               <i className="bi bi-box-arrow-up"></i>
+               <span>Update Disease List</span>
           </Link>
      </li>
-     {/* <!-- End "Restore User Account" Page Nav --> */}
+
 
      <li className="nav-item">
           <Link className="nav-link collapsed" to="">
-               <i className="bi bi-person-plus"></i>
+               <i className="bi bi-journal-text"></i>
                <span>All Patient List</span>
           </Link>
      </li>
-     {/* <!-- End "Restore User Account" Page Nav --> */}
-
 
 
      <li className="nav-item">
@@ -60,11 +58,11 @@ return (
                <span>All Doctors List</span>
           </Link>
      </li>
-     {/* <!-- End "See All Doctor" List Nav --> */}
+
 
      <li className="nav-item">
           <Link className="nav-link collapsed" to="">
-               <i className="bi bi-person-plus"></i>
+               <i className="bi bi-arrow-right-square"></i>
                <span>Log Out</span>
           </Link>
      </li>

@@ -1,0 +1,10 @@
+/* First Create a database named 'onlinedoctor' */
+
+CREATE TABLE `onlinedoctor`.`patients` (`username` VARCHAR(30) NOT NULL , `firstname` VARCHAR(30) NOT NULL , `lastname` VARCHAR(30) NULL DEFAULT NULL , `gender` VARCHAR(8) NOT NULL , `age` INT NOT NULL , `email` VARCHAR(50) NOT NULL , `fathername` VARCHAR(50) NULL DEFAULT NULL , `mothername` VARCHAR(50) NULL DEFAULT NULL , `password` VARCHAR(100) NOT NULL , `photo` VARCHAR NOT NULL , PRIMARY KEY (`username`)) ENGINE = InnoDB;
+
+
+CREATE TABLE `onlinedoctor`.`doctors` (`username` VARCHAR(30) NOT NULL , `firstname` VARCHAR(30) NOT NULL , `lastname` VARCHAR(30) NULL DEFAULT NULL , `gender` VARCHAR(8) NOT NULL , `age` INT NOT NULL , `email` VARCHAR(50) NOT NULL , `phonenumber` VARCHAR(15) NOT NULL , `fathername` VARCHAR(100) NULL DEFAULT NULL , `mothername` VARCHAR(100) NULL DEFAULT NULL , `doctorRegNumber` VARCHAR(30) NOT NULL , `specialization` VARCHAR(100) NOT NULL , `doctorDegree` VARCHAR NOT NULL , `photo` INT NOT NULL , `password` INT NOT NULL , PRIMARY KEY (`username`)) ENGINE = InnoDB;
+
+CREATE TABLE `onlinedoctor`.`admin` (`password` VARCHAR(50) NOT NULL , `phonenumber` VARCHAR(15) NOT NULL , `email` VARCHAR(50) NOT NULL ) ENGINE = InnoDB;
+
+INSERT INTO `admin` (`password`, `phonenumber`, `email`) VALUES ('muktadul', '01405678059', 'bsse1215@iit.du.ac.bd');

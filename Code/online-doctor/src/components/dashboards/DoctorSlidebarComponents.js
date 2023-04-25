@@ -1,12 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import CommonSlideberItem from '../CommonSlideberItem'
 
 export default function DoctorSlidebarComponents() {
 return (
 <>
      <li className="nav-item">
           <Link className="nav-link collapsed" to="">
-               <i className="bi bi-box-arrow-in-right"></i>
+               <i className="bi bi-person-circle"></i>
                <span>Profile</span>
           </Link>
      </li>
@@ -14,7 +15,7 @@ return (
 
      <li className="nav-item">
           <Link className="nav-link collapsed" to="">
-               <i className="bi bi-question-octagon"></i>
+               <i className="bi bi-x-diamond"></i>
                <span>Edit Information</span>
           </Link>
      </li>
@@ -22,7 +23,7 @@ return (
 
      <li className="nav-item">
           <Link className="nav-link collapsed" to="">
-               <i className="bi bi-person-plus"></i>
+               <i className="bi-file-earmark-text"></i>
                <span>Appointment List</span>
           </Link>
      </li>
@@ -30,42 +31,28 @@ return (
 
      <li className="nav-item">
           <Link className="nav-link collapsed" to="">
-               <i className="bi bi-question-octagon"></i>
+               <i className="bi bi-file-earmark-medical"></i>
                <span>Make Complain</span>
           </Link>
      </li>
      {/* <!-- End "Forget Password" Page Nav --> */}
 
 
-
      <li className="nav-item">
           <Link className="nav-link collapsed" to="">
-               <i className="bi bi-journal-text"></i>
-               <span>All Doctors List</span>
-          </Link>
-     </li>
-     {/* <!-- End "See All Doctor" List Nav --> */}
-
-
-     <li className="nav-item">
-          <Link className="nav-link collapsed" to="">
-               <i className="bi bi-person-plus"></i>
+               <i className="bi bi-trash"></i>
                <span>Delete Account</span>
           </Link>
      </li>
      {/* <!-- End "Restore User Account" Page Nav --> */}
 
-     <li className="nav-item">
-          <Link className="nav-link collapsed" to="">
-               <i className="bi bi-envelope"></i>
-               <span>Contact Us</span>
-          </Link>
-     </li>
-     {/* <!-- End "Contact" Page Nav --> */}
+
+     <CommonSlideberItem />
+
 
      <li className="nav-item">
           <Link className="nav-link collapsed" to="">
-               <i className="bi bi-person-plus"></i>
+               <i className="bi bi-arrow-right-square"></i>
                <span>Log Out</span>
           </Link>
      </li>

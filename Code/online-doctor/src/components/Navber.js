@@ -1,7 +1,12 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom';
 
 export default function Navber(props) {
+
+	useEffect(() => {
+		// This function will be called when the component starts routing
+		console.log('Component is starting to route');
+	  }, []);
 
 	const [sidebarVisible, setSidebarVisible] = useState(false);
 
@@ -16,7 +21,7 @@ export default function Navber(props) {
 			<div className="d-flex align-items-center justify-content-between">
 				<Link to="/" className="logo d-flex align-items-center">
 					<img src="assets/img/logo.png" alt=""/>
-					<span className="d-none d-lg-block">Online Doctor</span>
+					<span >Online Doctor</span>
 				</Link>
 				<i className="bi bi-list toggle-sidebar-btn" onClick={sidebarToggler}></i>
 			</div>
@@ -35,14 +40,14 @@ export default function Navber(props) {
 			</ul>
 
 			{/* <-- ======= Footer ======= --> */}
-			<footer id="footer" class="footer">
-				<div class="copyright">
+			<footer id="footer" className="footer">
+				<div className="copyright">
 					&copy; Copyright <strong><span>Group-12</span></strong>. All Rights Reserved
 				</div>
-				<div class="credits">
+				<div className="credits">
 					Designed by 
-					<Link to="https://www.facebook.com/muktadul.islam.1690?mibextid=ZbWKwL">Muktadul Islam</Link> &
-					<Link to="https://www.facebook.com/profile.php?id=100036399733733&mibextid=ZbWKwL">Abir Ahmed</Link>
+					<Link to="https://www.facebook.com/muktadul.islam.1690?mibextid=ZbWKwL"> Muktadul Islam</Link> &
+					<Link to="https://www.facebook.com/profile.php?id=100036399733733&mibextid=ZbWKwL"> Abir Ahmed</Link>
 				</div>
   			</footer>
   			{/* <!-- End Footer --> */}
