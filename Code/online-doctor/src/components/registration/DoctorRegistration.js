@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SuccessPopup from '../../popView/SuccessPopup';
 import ErrorPopup from '../../popView/ErrorPopup';
 import Axios from 'axios';
+import Constants from '../../Constants';
 
 export default function DoctorRegistration() {
      
@@ -40,7 +41,7 @@ export default function DoctorRegistration() {
           }
      
           event.preventDefault();
-          Axios.post("http://localhost:3001/doctorRegister", {
+          Axios.post(Constants.SERVER_IP + "doctorRegister", {
                firstName: firstName,
                lastName: lastName,
                age: age,
@@ -57,11 +58,25 @@ export default function DoctorRegistration() {
                password: password
           }).then((response) => {
                if(response.data.message){
-                    setNotification(<ErrorPopup message='Failed to Create an Account'/>)
+                    console.log(response.data.message);
+                    if(response.data.message.startsWith(Constants.DUPLICATE_ERROR)) {
+                         setNotification(<ErrorPopup message='Username must be Unique'/>)
+                    }
+                    else {
+                         setNotification(<ErrorPopup message='Failed to Create an Account'/>)
+                    }
+               
                }else{
                     setNotification(<SuccessPopup message='Your account has been successfully  created. Now you login in your profile '/>);
                }
-          })
+          }).catch((error) => {
+               if(error.message.startsWith(Constants.NETWORK_ERROR)) {
+                    setNotification(<ErrorPopup message='Failed to connect with Backend Database Server'/>)
+               }
+               else {
+                    setNotification(<ErrorPopup message='Failed to connect with Backend Database Server for Unknown reason'/>)
+               }
+          });
 
           setFirstName('');
           setLastName('');

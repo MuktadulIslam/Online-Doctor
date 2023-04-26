@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import Axios from 'axios';
+import Constants from '../../Constants';
 
 export default function BookAppointment() {
      const [password, setPassword] = useState("");
@@ -13,7 +14,7 @@ export default function BookAppointment() {
      
           e.preventDefault();
           console.log(timeDate);
-          Axios.post("http://localhost:3001/bookAppointment", {
+          Axios.post(Constants.SERVER_IP+"bookAppointment", {
                password: password,
                doctor: doctor,
                timeDate: timeDate

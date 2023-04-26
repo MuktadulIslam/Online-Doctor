@@ -1,12 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import { Link } from 'react-router-dom';
 
 export default function Navber(props) {
-
-	useEffect(() => {
-		// This function will be called when the component starts routing
-		console.log('Component is starting to route');
-	  }, []);
 
 	const [sidebarVisible, setSidebarVisible] = useState(false);
 
@@ -40,9 +35,10 @@ export default function Navber(props) {
 			</ul>
 
 			{/* <-- ======= Footer ======= --> */}
-			<footer id="footer" className="footer">
+			<footer id="footer">
+				<hr/>
 				<div className="copyright">
-					&copy; Copyright <strong><span>Group-12</span></strong>. All Rights Reserved
+					&copy;Copyright <strong><span>Group-12</span></strong>. All Rights Reserved
 				</div>
 				<div className="credits">
 					Designed by 

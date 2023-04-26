@@ -3,6 +3,7 @@ import { Link} from 'react-router-dom'
 import Axios from 'axios';
 import { createBrowserHistory } from 'history';
 import { Navigate } from 'react-router-dom';
+import Constants from '../../Constants';
 
 
 export default function LoginBackgroundComponents() {
@@ -19,7 +20,7 @@ export default function LoginBackgroundComponents() {
 
      const login = (e) => {
           e.preventDefault();
-          Axios.post("http://localhost:3001/login", {
+          Axios.post(Constants.SERVER_IP + "login", {
                user: user,
                username: username,
                password: password,

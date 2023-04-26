@@ -24,6 +24,7 @@ import PatientBackgroundComponents from './components/dashboards/PatientBackgrou
 
 
 import BookAppointment from './components/appointment/BookAppointment';
+import DoctorListComponent from './components/allDoctorList/DoctorListComponent';
 
 
 function App() {
@@ -43,7 +44,7 @@ function App() {
 
 			<Route path="/diseasePrediction" element={<Navber slideberContents = {<HomePageSlidebarComponents/>} backgroundContents={null}/>} />
 			
-			<Route path="/allDoctorsList" element={<Navber slideberContents = {<HomePageSlidebarComponents/>} backgroundContents={null}/>} />
+			<Route path="/allDoctorsList" element={<Navber slideberContents = {<HomePageSlidebarComponents/>} backgroundContents={<DoctorListComponent/>}/>} />
 
 			<Route path="/login" element={<Navber slideberContents = {<HomePageSlidebarComponents/>} backgroundContents={null}/>} />
 
