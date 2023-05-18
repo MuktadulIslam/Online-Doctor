@@ -145,7 +145,7 @@ export default function PatientRegistration() {
                {/* <--- Input Photo ---> */}
                <div className="col-md-12">
                     <label  htmlFor="photo" className="form-label">Select Your Photo</label>
-                    <input required type="file" name="photo" className="form-control" onChange={(e) => {setPhoto(e.target.value); setShowPopupComponent(false);}}/>
+                    <input required type="file" name="photo" className="form-control" onChange={(e) => {setPhoto(e.target.files[0]); setShowPopupComponent(false);}}/>
                </div>
 
 
