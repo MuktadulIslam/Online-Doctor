@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function HomePageBackgroundComponents() {
+export default function HomePageBackgroundComponent() {
 return (
      <section id="hero" className="d-flex align-items-center">
           <div className="webTitle">

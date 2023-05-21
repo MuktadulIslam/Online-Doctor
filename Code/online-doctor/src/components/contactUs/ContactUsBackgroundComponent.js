@@ -4,7 +4,7 @@ export default function ContactUsBackgroundComponents() {
      return (
           <>
 
-               <div className="section contact">
+               <div style={{padding: '20px'}} className="section contact">
 
                     <div className="row gy-4">
 

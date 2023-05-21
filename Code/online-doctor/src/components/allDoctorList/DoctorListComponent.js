@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Axios from 'axios';
 import Constants from '../../Constants';
 
-export default function DoctorListComponent() {
+export default function DoctorListComponent(props) {
     const [allDoctorList, setAllDoctorList] = useState([]);
 
     useEffect(() => {
@@ -24,8 +24,8 @@ export default function DoctorListComponent() {
                     <h1>Data Tables</h1>
                     <nav>
                         <ol className="breadcrumb">
-                            <li className="breadcrumb-item">Home</li>
-                            <li className="breadcrumb-item active">All Registered Doctor List</li>
+                            <li className="breadcrumb-item">{props.pageName}</li>
+                            <li className="breadcrumb-item active">AllRegisteredDoctorList</li>
                         </ol>
                     </nav>
                 </div>

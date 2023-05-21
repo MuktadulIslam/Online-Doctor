@@ -1,6 +1,10 @@
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
 
 const app = express();
 
@@ -23,7 +27,30 @@ function getConnection() {
     });
 }
 
-app.post('/doctorRegister', (req, res) => {
+
+        //  <-----------Doctor Registration-------->
+// Define storage engine
+const storage = multer.diskStorage({
+    destination: 'doctorsFolder/',
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const extension = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + uniqueSuffix + extension);
+    },
+});
+
+// Initialize upload middleware
+const upload = multer({ storage });
+
+app.post('/doctorRegister', upload.fields([{ name: 'photo' }, { name: 'doctorDegree' }]), (req, res) => {
+    const photo = req.files['photo'];
+    const doctorDegree = req.files['doctorDegree'];
+
+    // Generate the image and PDF references or URLs
+    const photoReferences = photo.map((file) => path.join('doctorsFolder/', file.filename));
+    const doctorDegreeReferences = doctorDegree.map((file) => path.join('doctorsFolder/', file.filename));
+
+
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const gender = req.body.gender;
@@ -32,17 +59,13 @@ app.post('/doctorRegister', (req, res) => {
     const email = req.body.email;
     const fatherName = req.body.fatherName;
     const motherName = req.body.motherName;
-    const photo = req.body.photo;
     const doctorRegNumber = req.body.doctorRegNumber;
-    const doctorDegree = req.body.doctorDegree;
     const specialization = req.body.specialization;
     const username = req.body.username;
     const password = req.body.password;
+    const account_status = 'active';
 
-    const imgsrc = 'http://127.0.0.1:3000/images/' + photo
-
-
-    getConnection().query("INSERT INTO doctors (firstName, lastName, email, phoneNumber, fatherName, motherName, gender, age,doctorRegNumber, specialization, doctorDegree, photo, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [firstName, lastName, email, phoneNumber, fatherName, motherName, gender, age, doctorRegNumber, specialization, doctorDegree, photo, username, password],
+    getConnection().query("INSERT INTO doctors (firstName, lastName, email, phoneNumber, fatherName, motherName, gender, age,doctorRegNumber, specialization, doctorDegree, photo, username, password, account_status, deletion_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,NULL)", [firstName, lastName, email, phoneNumber, fatherName, motherName, gender, age, doctorRegNumber, specialization, doctorDegreeReferences, photoReferences, username, password, account_status],
         (err, result) => {
             if (result) {
                 res.send(result);
@@ -54,7 +77,29 @@ app.post('/doctorRegister', (req, res) => {
 })
 
 
-app.post('/patientRegister', (req, res) => {
+
+//          <-----------Patient Registration-------->
+const storage2 = multer.diskStorage({
+    destination: 'patientsFolder/',
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const extension = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + uniqueSuffix + extension);
+    },
+});
+
+// Initialize upload middleware
+const upload2 = multer({ 'storage':storage2 });
+
+app.post('/patientRegister', upload2.single('photo'), (req, res) => {
+    const imageFile = req.file;
+
+    // Save the image file to a storage directory or cloud storage service (e.g., AWS S3)
+    // ...
+
+    // Generate the image reference or URL
+    const photoReferences = path.join('patientsFolder/', imageFile.filename);
+
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const gender = req.body.gender;
@@ -62,11 +107,22 @@ app.post('/patientRegister', (req, res) => {
     const email = req.body.email;
     const fatherName = req.body.fatherName;
     const motherName = req.body.motherName;
-    const photo = req.body.photo;
     const username = req.body.username;
     const password = req.body.password;
+    const account_status = 'active';
+    
+    // console.log(firstName);
+    // console.log(lastName);
+    // console.log(gender);
+    // console.log(age);
+    // console.log(email);
+    // console.log(fatherName);
+    // console.log(motherName);
+    // console.log(username);
+    // console.log(password);
+    // console.log(photoReferences);
 
-    getConnection().query("INSERT INTO patients (firstName, lastName, email, age,  gender, fatherName, motherName, photo, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [firstName, lastName, email, age, gender, fatherName, motherName, photo, username, password],
+    getConnection().query("INSERT INTO patients (username, firstName, lastName, gender, age, email, fatherName, motherName, password, photo, account_status, deletion_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL)", [username, firstName, lastName, gender, age, email, fatherName, motherName, password, photoReferences, account_status],
         (err, result) => {
             if (result) {
                 res.send(result);
@@ -95,8 +151,18 @@ app.post("/login", (req, res) => {
     getConnection().query(query, [username, password], (err, result) => {
         if (err) {
             res.status(500).send("Internal server error");
-        } else if (result.length > 0) {
-            res.send(user);
+        }
+        else if(result[0].account_status == 'archived') {
+            req.send('archived');
+        } 
+        else if (result.length > 0) {
+            const photoPath = result[0].photo; // Assuming the 'photo' field contains the file path
+            const photoData = fs.readFileSync(photoPath);
+            const base64Photo = photoData.toString('base64');
+            result[0].photo = base64Photo;
+
+            res.send(result[0]);
+            // console.log(result[0].username);
         } else {
             res.send("Wrong username or password");
         }
@@ -126,21 +192,25 @@ app.post('/bookAppointment', (req, res) => {
 app.post('/allDoctorList', (req, res) => {
     getConnection().query("SELECT username, firstname, lastname, gender, age, email, phonenumber, specialization, photo FROM doctors", (err, result) => {
         let doctorList = [];
-        result.map((doctorInfo) => (
-            doctorList.push({
-            username: doctorInfo.username,
-            firstname: doctorInfo.firstname,
-            lastname: doctorInfo.lastname,
-            gender: doctorInfo.gender,
-            age: doctorInfo.age,
-            email: doctorInfo.email,
-            phonenumber: doctorInfo.phonenumber,
-            specialization: doctorInfo.specialization,
-            photo: doctorInfo.photo
-        }))
-        )
+        result.forEach((doctorInfo) => {
+            const photoPath = doctorInfo.photo; // Assuming the 'photo' field contains the file path
+            const photoData = fs.readFileSync(photoPath);
+            const base64Photo = photoData.toString('base64');
 
-        console.log(doctorList);
+            doctorList.push({
+                username: doctorInfo.username,
+                firstname: doctorInfo.firstname,
+                lastname: doctorInfo.lastname,
+                gender: doctorInfo.gender,
+                age: doctorInfo.age,
+                email: doctorInfo.email,
+                phonenumber: doctorInfo.phonenumber,
+                specialization: doctorInfo.specialization,
+                photo: base64Photo,
+            });
+        });
+
+        // console.log(doctorList);
         if (result) {
             res.send({ message: doctorList });
         } else {

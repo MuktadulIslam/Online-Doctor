@@ -1,9 +1,8 @@
 import React, {useState} from 'react'
-import { Link } from 'react-router-dom'
 import Axios from 'axios';
 import Constants from '../../Constants';
 
-export default function BookAppointment() {
+export default function BookAppointmentComponent() {
      const [password, setPassword] = useState("");
      const [doctor, setDoctor] = useState("");
      const [timeDate, setTimeDate] = useState("");
@@ -46,12 +45,12 @@ export default function BookAppointment() {
                <p className='text-center pb-4'>Enter your password and appointment details to book an appointment</p>
           </div>
 
-          <form id = "regForm" className="row g-3 needs-validation" novalidate>
+          <form id = "regForm" className="row g-3 needs-validation" noValidate>
 
 
                {/* <--- Input Specialist & Doctor's Name ---> */}
                <div className="col-md-6">
-                    <label for="gender" className="form-label">Choose Specialist</label>
+                    <label htmlFor="gender" className="form-label">Choose Specialist</label>
                     <select className="form-control" id="gender" name='gender'  onChange={(e) => {setNotificaiton("")}} required>
                          <option value=""></option>
                          <option value="">Ophthalmologists</option>
@@ -61,8 +60,8 @@ export default function BookAppointment() {
                     </select>
                </div>
                <div className="col-md-6">
-                    <label for="gender" className="form-label">Choose A Doctor</label>
-                    <select className="form-control" id="gender" name='gender'  onChange={(e) => {setDoctor(e.target.value);setNotificaiton("")}} required>
+                    <label htmlFor="gender" className="form-label">Choose A Doctor</label>
+                    <select className="form-control" id="doctorName" name='gender'  onChange={(e) => {setDoctor(e.target.value);setNotificaiton("")}} required>
                          <option value=""></option>
                          <option value="ranaAhmed">Rana Ahmed</option>
                          <option value="anwerhossain">Anwer Hossain</option>
@@ -77,14 +76,14 @@ export default function BookAppointment() {
 
                {/* <--- Input Time and Date ---> */}
                <div className="col-md-12">
-                    <label for="photo" className="form-label">Select Time & Date</label>
+                    <label htmlFor="photo" className="form-label">Select Time & Date</label>
                     <input type="datetime-local" name="photo" className="form-control" id="photo"  onChange={(e) => {setTimeDate(e.target.value.toISOString());setNotificaiton("")}} required/>
                </div>
 
                
                {/* <--- Input Password ---> */}
                <div className="col-md-6">
-                    <label for="password" className="form-label">Password</label>
+                    <label htmlFor="password" className="form-label">Password</label>
                     <input type="password" name="password" className="form-control" id="password"  onChange={(e) => {setPassword(e.target.value);setNotificaiton("")}} required />
                </div>
 

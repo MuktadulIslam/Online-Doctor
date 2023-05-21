@@ -28,24 +28,24 @@ function getConnection() {
 }
 
 
-//          <-----------Doctor Registration-------->
+        //  <-----------Doctor Registration-------->
 // Define storage engine
 const storage = multer.diskStorage({
     destination: 'doctorsFolder/',
     filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      const extension = path.extname(file.originalname);
-      cb(null, file.fieldname + '-' + uniqueSuffix + extension);
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const extension = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + uniqueSuffix + extension);
     },
-  });
-  
-  // Initialize upload middleware
-  const upload = multer({ storage });
+});
 
-  app.post('/doctorRegister', upload.fields([{ name: 'photo' }, { name: 'doctorDegree' }]), (req, res) => {
+// Initialize upload middleware
+const upload = multer({ storage });
+
+app.post('/doctorRegister', upload.fields([{ name: 'photo' }, { name: 'doctorDegree' }]), (req, res) => {
     const photo = req.files['photo'];
     const doctorDegree = req.files['doctorDegree'];
-  
+
     // Generate the image and PDF references or URLs
     const photoReferences = photo.map((file) => path.join('doctorsFolder/', file.filename));
     const doctorDegreeReferences = doctorDegree.map((file) => path.join('doctorsFolder/', file.filename));
@@ -59,16 +59,13 @@ const storage = multer.diskStorage({
     const email = req.body.email;
     const fatherName = req.body.fatherName;
     const motherName = req.body.motherName;
-    // const photo = req.body.photo;
     const doctorRegNumber = req.body.doctorRegNumber;
-    // const doctorDegree = req.body.doctorDegree;
     const specialization = req.body.specialization;
     const username = req.body.username;
     const password = req.body.password;
+    const account_status = 'active';
 
-    // console.log(firstName, "  ", lastName,  "  ",  email, "  ", fatherName, "   ", motherName);
-    console.log(firstName);
-    getConnection().query("INSERT INTO doctors (firstName, lastName, email, phoneNumber, fatherName, motherName, gender, age,doctorRegNumber, specialization, doctorDegree, photo, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [firstName, lastName, email, phoneNumber, fatherName, motherName, gender, age, doctorRegNumber, specialization, doctorDegreeReferences, photoReferences, username, password],
+    getConnection().query("INSERT INTO doctors (firstName, lastName, email, phoneNumber, fatherName, motherName, gender, age,doctorRegNumber, specialization, doctorDegree, photo, username, password, account_status, deletion_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,NULL)", [firstName, lastName, email, phoneNumber, fatherName, motherName, gender, age, doctorRegNumber, specialization, doctorDegreeReferences, photoReferences, username, password, account_status],
         (err, result) => {
             if (result) {
                 res.send(result);
@@ -80,7 +77,29 @@ const storage = multer.diskStorage({
 })
 
 
-app.post('/patientRegister', (req, res) => {
+
+//          <-----------Patient Registration-------->
+const storage2 = multer.diskStorage({
+    destination: 'patientsFolder/',
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const extension = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + uniqueSuffix + extension);
+    },
+});
+
+// Initialize upload middleware
+const upload2 = multer({ 'storage':storage2 });
+
+app.post('/patientRegister', upload2.single('photo'), (req, res) => {
+    const imageFile = req.file;
+
+    // Save the image file to a storage directory or cloud storage service (e.g., AWS S3)
+    // ...
+
+    // Generate the image reference or URL
+    const photoReferences = path.join('patientsFolder/', imageFile.filename);
+
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const gender = req.body.gender;
@@ -88,11 +107,22 @@ app.post('/patientRegister', (req, res) => {
     const email = req.body.email;
     const fatherName = req.body.fatherName;
     const motherName = req.body.motherName;
-    const photo = req.body.photo;
     const username = req.body.username;
     const password = req.body.password;
+    const account_status = 'active';
+    
+    // console.log(firstName);
+    // console.log(lastName);
+    // console.log(gender);
+    // console.log(age);
+    // console.log(email);
+    // console.log(fatherName);
+    // console.log(motherName);
+    // console.log(username);
+    // console.log(password);
+    // console.log(photoReferences);
 
-    getConnection().query("INSERT INTO patients (firstName, lastName, email, age,  gender, fatherName, motherName, photo, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [firstName, lastName, email, age, gender, fatherName, motherName, photo, username, password],
+    getConnection().query("INSERT INTO patients (username, firstName, lastName, gender, age, email, fatherName, motherName, password, photo, account_status, deletion_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL)", [username, firstName, lastName, gender, age, email, fatherName, motherName, password, photoReferences, account_status],
         (err, result) => {
             if (result) {
                 res.send(result);
@@ -156,19 +186,19 @@ app.post('/allDoctorList', (req, res) => {
             const photoPath = doctorInfo.photo; // Assuming the 'photo' field contains the file path
             const photoData = fs.readFileSync(photoPath);
             const base64Photo = photoData.toString('base64');
-      
+
             doctorList.push({
-              username: doctorInfo.username,
-              firstname: doctorInfo.firstname,
-              lastname: doctorInfo.lastname,
-              gender: doctorInfo.gender,
-              age: doctorInfo.age,
-              email: doctorInfo.email,
-              phonenumber: doctorInfo.phonenumber,
-              specialization: doctorInfo.specialization,
-              photo: base64Photo,
+                username: doctorInfo.username,
+                firstname: doctorInfo.firstname,
+                lastname: doctorInfo.lastname,
+                gender: doctorInfo.gender,
+                age: doctorInfo.age,
+                email: doctorInfo.email,
+                phonenumber: doctorInfo.phonenumber,
+                specialization: doctorInfo.specialization,
+                photo: base64Photo,
             });
-          });
+        });
 
         // console.log(doctorList);
         if (result) {
