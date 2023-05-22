@@ -16,9 +16,6 @@ export default function HomePage() {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [mainBackground, setMainBackground] = useState(<HomePageBackgroundComponent />);
 
-    const sidebarToggler = () => {
-        setSidebarVisible(!sidebarVisible);
-    };
 
     useEffect(() => {
         // console.log('hello')
@@ -33,7 +30,7 @@ export default function HomePage() {
                         <img src="assets/img/logo.png" alt="" />
                         <span >Online Doctor</span>
                     </a>
-                    <i className="bi bi-list toggle-sidebar-btn" onClick={sidebarToggler}></i>
+                    <i className="bi bi-list toggle-sidebar-btn" onClick={()=>setSidebarVisible(!sidebarVisible)}></i>
                 </div>
                 {/* <!-- End Logo --> */}
 
@@ -47,35 +44,35 @@ export default function HomePage() {
 
                 <ul className="sidebar-nav" id="sidebar-nav">
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<DoctorRegistrationComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<DoctorRegistrationComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-person-plus"></i>
                             <span>Register As a Doctor</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<PatientRegistrationComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<PatientRegistrationComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-person-plus"></i>
                             <span>Register As a Patient</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<LoginBackgroundComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<LoginBackgroundComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-box-arrow-in-right"></i>
                             <span>Login</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<ForgetPasswordBackgroundComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<ForgetPasswordBackgroundComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-question-octagon"></i>
                             <span>Forget Password</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<PredictionComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<PredictionComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-clipboard-plus"></i>
                             <span>Predict Disease</span>
                         </Link>
@@ -84,7 +81,7 @@ export default function HomePage() {
 
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<DoctorListComponent pageName='Home'/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<DoctorListComponent pageName='Home'/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-journal-text"></i>
                             <span>All Doctors List</span>
                         </Link>
@@ -92,14 +89,14 @@ export default function HomePage() {
                     {/* <!-- End "See All Doctor" List Nav --> */}
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<RestoreUserAccountComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<RestoreUserAccountComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-arrow-counterclockwise"></i>
                             <span>Restore User Account</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<ContactUsBackgroundComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<ContactUsBackgroundComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-envelope"></i>
                             <span>Contact Us</span>
                         </Link>

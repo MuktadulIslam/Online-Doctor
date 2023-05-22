@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate  } from 'react-router-dom'
 import Axios from 'axios';
 import { createBrowserHistory } from 'history';
-import { Navigate } from 'react-router-dom';
 import Constants from '../../Constants';
-import UserInfoService from './UserInfoService';
 
 
 export default function LoginBackgroundComponent() {
@@ -51,7 +49,7 @@ export default function LoginBackgroundComponent() {
                     // history.push("/adminProfile");
                     setIsLoggedIn(true);
                     setProfile("/adminProfile")
-                    UserInfoService.userInfo = response.data;
+                    localStorage.setItem('userData', JSON.stringify(response.data));
 
                     // return <Navigate to="/login/adminProfile" />;
                     // window.location.reload();
@@ -62,14 +60,14 @@ export default function LoginBackgroundComponent() {
 
                     setIsLoggedIn(true);
                     setProfile("/doctorProfile");
-                    UserInfoService.userInfo = response.data;
+                    localStorage.setItem('userData', JSON.stringify(response.data));
                }
                else if(user == 'patients'){
                     // history.push("/patientProfile");
                     // window.location.reload();
                     setIsLoggedIn(true);
                     setProfile("/patientProfile");
-                    UserInfoService.userInfo = response.data;
+                    localStorage.setItem('userData', JSON.stringify(response.data));
                }
                else {
                     console.log("Developer's Error");

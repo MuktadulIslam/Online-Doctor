@@ -28,7 +28,7 @@ function getConnection() {
 }
 
 
-        //  <-----------Doctor Registration-------->
+//  <-----------Doctor Registration-------->
 // Define storage engine
 const storage = multer.diskStorage({
     destination: 'doctorsFolder/',
@@ -89,7 +89,7 @@ const storage2 = multer.diskStorage({
 });
 
 // Initialize upload middleware
-const upload2 = multer({ 'storage':storage2 });
+const upload2 = multer({ 'storage': storage2 });
 
 app.post('/patientRegister', upload2.single('photo'), (req, res) => {
     const imageFile = req.file;
@@ -110,7 +110,7 @@ app.post('/patientRegister', upload2.single('photo'), (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     const account_status = 'active';
-    
+
     // console.log(firstName);
     // console.log(lastName);
     // console.log(gender);
@@ -135,6 +135,74 @@ app.post('/patientRegister', upload2.single('photo'), (req, res) => {
 
 
 
+
+app.post('/updatePatientProfile', upload2.single('photo'), (req, res) => {
+    const imageFile = req.file;
+    const firstname = req.body.firstName;
+    const lastname = req.body.lastName;
+    const gender = req.body.gender;
+    const age = req.body.age;
+    const email = req.body.email;
+    const fathername = req.body.fatherName;
+    const mothername = req.body.motherName;
+    const username = req.body.username;
+    let query = `UPDATE patients SET `;
+    let params = [];
+
+    if (firstname) { query += `firstname = ?, `; params.push(firstname); }
+    if (lastname) { query += `lastname = ?, `; params.push(lastname); }
+    if (gender) { query += `gender = ?, `; params.push(gender); }
+    if (age) { query += `age = ?, `; params.push(age); }
+    if (email) { query += `email = ?, `; params.push(email); }
+    if (fathername) { query += `fathername = ?, `; params.push(fathername); }
+    if (mothername) { query += `mothername = ?, `; params.push(mothername); }
+    if (imageFile) {
+        const photoReferences = path.join('patientsFolder/', imageFile.filename);
+        query += `photo = ?, `;
+        params.push(photoReferences);
+
+        fs.unlink(req.body.oldPhoto, function (err) {
+            if (err) {
+              console.error(err);
+            } else {
+              console.log("File removed:");
+            }
+          });
+    }
+
+    query = query.substring(0, query.length-2);
+
+    query += ` WHERE username = ?`;
+    params.push(username);
+
+    // console.log(query);
+    // console.log(params);
+    // console.log('\n\n');
+    // console.log('firstname= ', firstname);
+    // console.log('lastname= ', lastname);
+    // console.log('gender= ', gender);
+    // console.log('age= ', age);
+    // console.log('email= ',  email);
+    // console.log('fathername= ',  fathername);
+    // console.log('mothername= ',mothername);
+    // console.log('username= ', username);
+    // console.log('\n\n\n');
+
+
+    getConnection().query(query, params,
+        (err, result) => {
+            if (result) {
+                // res.send(result);
+                console.log(result);
+            } else {
+                // res.send({ message: err.message })
+                console.log(err);
+            }
+        });
+})
+
+
+
 app.post("/login", (req, res) => {
     const { user, username, password } = req.body;
     let query;
@@ -151,8 +219,19 @@ app.post("/login", (req, res) => {
     getConnection().query(query, [username, password], (err, result) => {
         if (err) {
             res.status(500).send("Internal server error");
-        } else if (result.length > 0) {
-            res.send(user);
+        }
+        else if (result[0].account_status == 'archived') {
+            req.send('archived');
+        }
+        else if (result.length > 0) {
+            const photoPath = result[0].photo; // Assuming the 'photo' field contains the file path
+            const photoData = fs.readFileSync(photoPath);
+            const base64Photo = photoData.toString('base64');
+            result[0].photo = base64Photo;
+            result[0].photopath = photoPath;
+
+            res.send(result[0]);
+            // console.log(result[0].username);
         } else {
             res.send("Wrong username or password");
         }

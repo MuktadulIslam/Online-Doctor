@@ -11,16 +11,12 @@ import ContactUsBackgroundComponent from '../../contactUs/ContactUsBackgroundCom
 import FooterComponent from '../../FooterComponent';
 import PredictionComponent from '../../prediction/PredictionComponent';
 
-export default function PatientProfile(props) {
+export default function PatientProfile() {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [mainBackground, setMainBackground] = useState(<PatientProfileInfoComponent/>);
-
-    const sidebarToggler = () => {
-        setSidebarVisible(!sidebarVisible);
-    };
+    console.log(JSON.parse(localStorage.getItem('userData')));
 
     useEffect(() => {
-        // console.log('hello')
     }, [mainBackground]);
 
     return (
@@ -32,7 +28,7 @@ export default function PatientProfile(props) {
                         <img src="assets/img/logo.png" alt="" />
                         <span >Online Doctor</span>
                     </a>
-                    <i className="bi bi-list toggle-sidebar-btn" onClick={sidebarToggler}></i>
+                    <i className="bi bi-list toggle-sidebar-btn" onClick={()=> setSidebarVisible(!sidebarVisible)}></i>
                 </div>
             </header>
             {/* <!-- End Header --> */}
@@ -44,56 +40,56 @@ export default function PatientProfile(props) {
 
                 <ul className="sidebar-nav" id="sidebar-nav">
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<PatientProfileInfoComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<PatientProfileInfoComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-person-circle"></i>
                             <span>Profile</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<PredictionComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<PredictionComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-clipboard-plus"></i>
                             <span>Predict Disease</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<PatientAppointmentHistoryComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<PatientAppointmentHistoryComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-file-earmark-text"></i>
                             <span>History</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<DoctorListComponent pageName='PatientProfile'/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<DoctorListComponent pageName='PatientProfile'/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-journal-text"></i>
                             <span>All Doctors List</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<BookAppointmentComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<BookAppointmentComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-bookmark-plus"></i>
                             <span>Book Appointment</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<MakeComplain />)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<MakeComplain />); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-file-earmark-medical"></i>
                             <span>Make Complain</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<DeleteAccountComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<DeleteAccountComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-trash"></i>
                             <span>Delete Account</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<ContactUsBackgroundComponent />)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<ContactUsBackgroundComponent />); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-envelope"></i>
                             <span>Contact Us</span>
                         </Link>

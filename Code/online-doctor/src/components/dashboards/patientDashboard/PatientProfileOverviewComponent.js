@@ -1,7 +1,8 @@
 import React from 'react'
 
-export default function PatientProfileOverviewComponent(props) {
-    const userInfo = props.userInfo;
+export default function PatientProfileOverviewComponent() {
+    const userInfo = JSON.parse(localStorage.getItem('userData'))
+
     return (
         <div className="tab-pane fade show active profile-overview" id="profile-overview">
             <h5 className="card-title">Profile Details</h5>

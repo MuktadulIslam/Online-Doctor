@@ -3,17 +3,12 @@ import PatientProfileOverviewComponent from './PatientProfileOverviewComponent';
 import PatientEditInfoComponent from './PatientEditInfoComponent';
 import PatientsSettingsComponent from './PatientsSettingsComponent';
 import ChangePasswordComponent from '../../userAccount/ChangePasswordComponent';
-import UserInfoService from '../../login/UserInfoService';
 
 export default function PatientProfileInfoComponent() {
-    const [userInfo, setUserInfo] = useState(UserInfoService.userInfo);
-    const [profileViewComponent, setProfileViewComponent] = useState
-    (<PatientProfileOverviewComponent userInfo={userInfo}/>);
-    // console.log(userInfo);
+    const userInfo = JSON.parse(localStorage.getItem('userData'));
+    const [profileViewComponent, setProfileViewComponent] = useState(<PatientProfileOverviewComponent/>);
     useEffect(() => {
-        // console.log('hello')
     }, [profileViewComponent]);
-    const valueToSend = 'Hello, Child Component!';
 
     return (
         <div style={{ padding: '20px' }}>
@@ -59,19 +54,19 @@ export default function PatientProfileInfoComponent() {
                                 <ul className="nav nav-tabs nav-tabs-bordered">
 
                                     <li className="nav-item">
-                                        <button className="nav-link active" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<PatientProfileOverviewComponent userInfo={userInfo}/>) }}>Overview</button>
+                                        <button className="nav-link active" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<PatientProfileOverviewComponent/>) }}>Overview</button>
                                     </li>
 
                                     <li className="nav-item">
-                                        <button className="nav-link" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<PatientEditInfoComponent userInfo={userInfo}/>) }}> Edit Profile</button>
+                                        <button className="nav-link" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<PatientEditInfoComponent/>) }}> Edit Profile</button>
                                     </li>
 
                                     <li className="nav-item">
-                                        <button className="nav-link" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<PatientsSettingsComponent userInfo={userInfo}/>) }}>Settings</button>
+                                        <button className="nav-link" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<PatientsSettingsComponent/>) }}>Settings</button>
                                     </li>
 
                                     <li className="nav-item">
-                                        <button className="nav-link" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<ChangePasswordComponent userInfo={userInfo}/>) }}>Change Password</button>
+                                        <button className="nav-link" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<ChangePasswordComponent/>) }}>Change Password</button>
                                     </li>
 
                                 </ul>
