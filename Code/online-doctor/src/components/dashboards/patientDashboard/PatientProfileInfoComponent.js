@@ -7,8 +7,6 @@ import ChangePasswordComponent from '../../userAccount/ChangePasswordComponent';
 export default function PatientProfileInfoComponent() {
     const userInfo = JSON.parse(localStorage.getItem('userData'));
     const [profileViewComponent, setProfileViewComponent] = useState(<PatientProfileOverviewComponent/>);
-    useEffect(() => {
-    }, [profileViewComponent]);
 
     return (
         <div style={{ padding: '20px' }}>

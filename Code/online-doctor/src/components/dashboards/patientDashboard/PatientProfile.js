@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
+import Constants from '../../../Constants';
+import Axios from 'axios';
 
 import DeleteAccountComponent from '../../userAccount/DeleteAccountComponent';
 import MakeComplain from '../../complain_feedback/MakeComplainComponent';
@@ -13,11 +15,28 @@ import PredictionComponent from '../../prediction/PredictionComponent';
 
 export default function PatientProfile() {
     const [sidebarVisible, setSidebarVisible] = useState(false);
-    const [mainBackground, setMainBackground] = useState(<PatientProfileInfoComponent/>);
-    console.log(JSON.parse(localStorage.getItem('userData')));
+    const [mainBackground, setMainBackground] = useState('');
+    let ignore = false;
+
+    const loadFromServer = () => {
+        const userInfo = JSON.parse(localStorage.getItem('userData'));
+        Axios.post(Constants.SERVER_IP + "getAccountInfo", {
+            user: userInfo.user,
+            username: userInfo.username,
+            password: userInfo.password,
+        }).then((response) => {
+            if (response.data != 'Internal server error') {
+                localStorage.setItem('userData', JSON.stringify(response.data));
+                console.log(response.data);
+                setMainBackground(<PatientProfileInfoComponent/>);
+            }
+        })
+    }
 
     useEffect(() => {
-    }, [mainBackground]);
+        if (!ignore) {loadFromServer();}
+        ignore = true;
+    }, []);
 
     return (
         <nav className={sidebarVisible ? 'toggle-sidebar' : ''}>

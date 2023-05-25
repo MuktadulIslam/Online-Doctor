@@ -208,7 +208,7 @@ export default function DoctorRegistrationComponent() {
 
                {/* <--- If already login ---> */}
                <div className="col-md-12">
-                    <p className="medium pb-4">Already have an account? <Link to="/login">Log in</Link></p>
+                    <p className="medium pb-4">Already have an account? <Link to="">Log in</Link></p>
                </div>
           </form>
      </div>

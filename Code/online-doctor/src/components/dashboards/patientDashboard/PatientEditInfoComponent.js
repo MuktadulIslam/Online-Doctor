@@ -16,11 +16,15 @@ export default function PatientEditInfoComponent(props) {
     const [fathername, setFathername] = useState(userInfo.fathername);
     const [mothername, setMothername] = useState(userInfo.mothername);
     const [photo, setPhoto] = useState(null);
+    const [password, setPassword] = useState(null);
 
     const [notification, setNotification] = useState(false);
     const [showPopupComponent, setShowPopupComponent] = useState(true);
 
+    
     const uploadNewImage = () => {
+        setShowPopupComponent(false); setNotification('');
+
         const input = document.createElement('input');
         input.type = 'file';
         input.onchange = (event) => {
@@ -37,88 +41,97 @@ export default function PatientEditInfoComponent(props) {
     };
 
     const removeImage = () => {
+        if(userInfo.photopath === "defaultProfilePic.png") {
+            setShowPopupComponent(true);
+            setNotification(<ErrorPopup message='There is no profile photo to remove' />);
+            return;
+        }
+        setShowPopupComponent(false); setNotification('');
         setImageSrc(null);
-        setPhoto(null);
+        setPhoto('Remove Photo');
     }
 
 
 
     const updatePatientProfile = (event) => {
         event.preventDefault();
-        // setShowPopupComponent(true);
-   
+        setShowPopupComponent(true);
+
+        let changed = false;
+
         const formData = new FormData();
         formData.append('username', userInfo.username);
+        formData.append('user', userInfo.user);
+        formData.append('oldPassword', password);
         // Adding changed data in formdata to store update in Database
-        if(userInfo.firstname !=firstname) {
+        if (userInfo.firstname != firstname) {
             formData.append('firstName', firstname);
+            changed = true;
         }
-        if(userInfo.lastname != lastname) {
+        if (userInfo.lastname != lastname) {
             formData.append('lastName', lastname);
+            changed = true;
         }
-        if(userInfo.age != age) {
+        if (userInfo.age != age) {
             formData.append('age', age);
+            changed = true;
         }
-        if(userInfo.gender != gender) {
+        if (userInfo.gender != gender) {
             formData.append('gender', gender);
+            changed = true;
         }
-        if(userInfo.email != email) {
+        if (userInfo.email != email) {
             formData.append('email', email);
+            changed = true;
         }
-        if(userInfo.fathername != fathername) {
+        if (userInfo.fathername != fathername) {
             formData.append('fatherName', fathername);
+            changed = true;
         }
-        if(userInfo.mothername != mothername){
+        if (userInfo.mothername != mothername) {
             formData.append('motherName', mothername);
+            changed = true;
         }
-        if(photo != null){
+    
+        if(photo == 'Remove Photo'){
+            formData.append('removePhoto', true);
+            formData.append('oldPhoto', userInfo.photopath);
+            changed = true;
+        }
+        else if (photo != null) {
             formData.append('photo', photo);
             formData.append('oldPhoto', userInfo.photopath);
+            changed = true;
         }
 
-        Axios.post(Constants.SERVER_IP + "updatePatientProfile", formData).then((response) => {
-             if(response.data.message){
-                  console.log(response.data.message);
-                  if(response.data.message.startsWith(Constants.DUPLICATE_ERROR)) {
-                       setNotification(<ErrorPopup message='Username must be Unique'/>)
-                  }
-                  else {
-                       setNotification(<ErrorPopup message='Failed to Create an Account'/>)
-                  }
-             
-             }else{
-                  setNotification(<SuccessPopup message='Your account has been successfully  created. Now you login in your profile '/>);
-             }
-        }).catch((error) => {
-             if(error.message.startsWith(Constants.NETWORK_ERROR)) {
-                  setNotification(<ErrorPopup message='Failed to connect with Backend Database Server'/>)
-             }
+        if(!changed) {
+            setNotification(<ErrorPopup message='First you need to change some of your information' />);
+            return;
+        }
+
+        Axios.post(Constants.SERVER_IP + "updateProfile", formData).then((response) => {
+            if (response.data == 'Successfully Updated') {
+                setNotification(<SuccessPopup message='Your account has been successfully Updated' />);
+            }
+            else if(response.data == 'Old password does not match'){
+                setNotification(<ErrorPopup message='Password does not match' />)
+            }
              else {
-                  setNotification(<ErrorPopup message='Failed to connect with Backend Database Server for Unknown reason'/>)
-             }
+                setNotification(<ErrorPopup message='Failed to Update Your Account' />)
+            }
+        }).catch((error) => {
+            if (error.message.startsWith(Constants.NETWORK_ERROR)) {
+                setNotification(<ErrorPopup message='Failed to connect with Backend Database Server' />)
+            }
+            else {
+                setNotification(<ErrorPopup message='Failed to connect with Backend Database Server for Unknown reason' />)
+            }
         });
 
-        // setFirstName('');
-        // setLastName('');
-        // setAge(0);
-        // setGender('');
-        // setEmail('');
-        // setPhoneNumber('');
-        // setFatherName('');
-        // setMotherName('');
-        // setPhoto('');
-        // setUsername('');
-        // setPassword('');
-        // setConfirmPassword('');
-        // document.getElementById("regForm").reset();
-   }
+        document.getElementById('password').value='';
+        setPassword('');
+    }
 
-    // useEffect(() => {
-    //     // if(photo){
-    //         console.log(photo)
-    //         // console.log('hello');
-    //     // }
-    // },[imageSrc]);
 
     return (
         <>
@@ -140,14 +153,14 @@ export default function PatientEditInfoComponent(props) {
                     <div className="row mb-3">
                         <label htmlFor="fullName" className="col-md-4 col-lg-3 col-form-label">First Name</label>
                         <div className="col-md-8 col-lg-9">
-                            <input name="fullName" type="text" className="form-control" value={firstname} onChange={(e) => setFirstname(e.target.value)} />
+                            <input name="fullName" type="text" className="form-control" value={firstname} onChange={(e) => { setFirstname(e.target.value); setShowPopupComponent(false); setNotification(''); }} />
                         </div>
                     </div>
 
                     <div className="row mb-3">
                         <label htmlFor="fullName" className="col-md-4 col-lg-3 col-form-label">Last Name</label>
                         <div className="col-md-8 col-lg-9">
-                            <input name="fullName" type="text" className="form-control" value={lastname} onChange={(e) => setLastname(e.target.value)} />
+                            <input name="fullName" type="text" className="form-control" value={lastname} onChange={(e) => { setLastname(e.target.value); setShowPopupComponent(false); setNotification(''); }} />
                         </div>
                     </div>
 
@@ -156,35 +169,42 @@ export default function PatientEditInfoComponent(props) {
                     <div className="row mb-3">
                         <label htmlFor="company" className="col-md-4 col-lg-3 col-form-label">Email</label>
                         <div className="col-md-8 col-lg-9">
-                            <input name="company" type="text" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <input name="company" type="text" className="form-control" value={email} onChange={(e) => { setEmail(e.target.value); setShowPopupComponent(false); setNotification(''); }} />
                         </div>
                     </div>
 
                     <div className="row mb-3">
                         <label htmlFor="company" className="col-md-4 col-lg-3 col-form-label">Gender</label>
                         <div className="col-md-8 col-lg-9">
-                            <input name="company" type="text" className="form-control" value={gender} onChange={(e) => setGender(e.target.value)} />
+                            <input name="company" type="text" className="form-control" value={gender} onChange={(e) => { setGender(e.target.value); setShowPopupComponent(false); setNotification(''); }} />
                         </div>
                     </div>
 
                     <div className="row mb-3">
                         <label htmlFor="company" className="col-md-4 col-lg-3 col-form-label">Age</label>
                         <div className="col-md-8 col-lg-9">
-                            <input name="company" type="text" className="form-control" value={age} onChange={(e) => setAge(e.target.value)} />
+                            <input name="company" type="text" className="form-control" value={age} onChange={(e) => { setAge(e.target.value); setShowPopupComponent(false); setNotification(''); }} />
                         </div>
                     </div>
 
                     <div className="row mb-3">
                         <label htmlFor="company" className="col-md-4 col-lg-3 col-form-label">Father Name</label>
                         <div className="col-md-8 col-lg-9">
-                            <input name="company" type="text" className="form-control" value={fathername} onChange={(e) => setFathername(e.target.value)} />
+                            <input name="company" type="text" className="form-control" value={fathername} onChange={(e) => { setFathername(e.target.value); setShowPopupComponent(false); setNotification(''); }} />
                         </div>
                     </div>
 
                     <div className="row mb-3">
                         <label htmlFor="company" className="col-md-4 col-lg-3 col-form-label">Mother Name</label>
                         <div className="col-md-8 col-lg-9">
-                            <input name="company" type="text" className="form-control" value={mothername} onChange={(e) => setMothername(e.target.value)} />
+                            <input name="company" type="text" className="form-control" value={mothername} onChange={(e) => { setMothername(e.target.value); setShowPopupComponent(false); setNotification(''); }} />
+                        </div>
+                    </div>
+
+                    <div className="row mb-3">
+                        <label htmlFor="password" className="col-md-4 col-lg-3 col-form-label">Password</label>
+                        <div className="col-md-8 col-lg-9">
+                            <input required type="password" name="password" id='password' className="form-control" onChange={(e) => { setPassword(e.target.value); setShowPopupComponent(false); setNotification(''); }} />
                         </div>
                     </div>
 

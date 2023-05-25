@@ -24,12 +24,14 @@ export default function LoginBackgroundComponent() {
                username: username,
                password: password,
           }).then((response) => {
+               console.log(response)
                if (response.data === 'Internal server error') {
-                    history.push("/");
+                    <div className="col-md-12">
+                              <h5 style={{ color: 'red' }}>Internal server error</h5>
+                         </div>
                }
 
                else if (response.data === 'Wrong username or password') {
-                    console.log("failed to login")
                     setNotificaiton(
                          <div className="col-md-12">
                               <h5 style={{ color: 'red' }}>Wrong username or password</h5>
