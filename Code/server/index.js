@@ -249,8 +249,11 @@ app.post('/updateProfile', upload2.single('photo'), (req, res) => {
 
 
 
-app.post("/login", (req, res) => {
-    const { user, username, password } = req.body;
+app.post('/login', (req, res) => {
+    // const { user, username, password } = req.body;
+    const user = req.body.user;
+    const username = req.body.username;
+    const password = req.body.password;
     let query;
     if (user == "doctors") {
         query = `SELECT * FROM doctors WHERE username = ? AND password = ?`;
@@ -261,8 +264,8 @@ app.post("/login", (req, res) => {
     else if (user == "admin") {
         query = `SELECT * FROM admin WHERE username = ? AND password = ?`;
     }
-
-    getConnection().query(query, [username, password], (err, result) => {
+    try {
+        getConnection().query(query, [username, password], (err, result) => {
             if (err) {
                 return res.send(message = "Internal server error");
             }
@@ -287,12 +290,14 @@ app.post("/login", (req, res) => {
                 delete result[0].password;
                 result[0].user = user;
 
-                res.send(result[0]);
+                return res.send(result[0]);
             } else {
-                res.send("Wrong username or password");
+                return res.send("Wrong username or password");
             }
-            console.log('hiii');
-    });
+        });
+    } catch (err) {
+        console.log('\n\nerr\n\n');
+    }
 });
 
 
@@ -345,21 +350,78 @@ app.post("/getAccountInfo", (req, res) => {
 app.post('/bookAppointment', (req, res) => {
 
     const password = req.body.password;
-    const doctor = req.body.doctor;
-    const timeDate = req.body.timeDate;
-    const username = "rana";
+    const patient = req.body.patient;
+
+    getConnection().query('SELECT * FROM patients WHERE username = ? AND password = ?', [patient, password], (err, result) => {
+        if (result[0]) {
+            const doctor = req.body.doctor;
+            const date = req.body.date;
+            const appointmentID = Date.now() + '-' + patient + '-' + doctor;
+            const reminder = req.body.reminder;
 
 
-    getConnection().query("INSERT INTO appointment (username, doctor, timeDate) VALUES (?, ?, ?)", [username, doctor, timeDate],
-        (err, result) => {
-            if (result) {
-                res.send(result);
-            } else {
-                res.send({ message: "ENTER CORRECT ASKED DETAILS!" })
-            }
+            getConnection().query("INSERT INTO appointments (appoinementID, patientID, doctorID, date,reminder) VALUES (?, ?, ?, ?, ?)", [appointmentID, patient, doctor, date, reminder],
+                (err, result) => {
+                    if (result) {
+                        res.send({message: 'Booking successfully completed'});
+                    } else {
+                        res.send({ message: "ENTER CORRECT ASKED DETAILS!" })
+                    }
+                }
+            )
         }
+        else {
+            res.send({ message: "Password does not match" })
+        }
+    });
+})
+
+
+app.post('/allDoctorSpecialization', (req, res) => {
+    getConnection().query("SELECT DISTINCT specialization FROM doctors", (err, result) => {
+        let doctorList = [];
+        result.forEach((doctorInfo) => {
+
+            doctorList.push({
+                specialization: doctorInfo.specialization,
+            });
+        });
+
+        // console.log(doctorList);
+        if (result) {
+            res.send({ message: doctorList });
+        } else {
+            res.send({ message: err.message })
+        }
+    }
     )
 })
+
+
+
+app.post('/allSpecializedDoctorList', (req, res) => {
+    getConnection().query("SELECT username, firstname, lastname FROM doctors WHERE specialization = ?", [req.body.specialization], (err, result) => {
+        let doctorList = [];
+        result.forEach((doctorInfo) => {
+            doctorList.push({
+                username: doctorInfo.username,
+                firstname: doctorInfo.firstname,
+                lastname: doctorInfo.lastname,
+            });
+        });
+
+        // console.log(doctorList);
+        if (result) {
+            res.send({ message: doctorList });
+        } else {
+            res.send({ message: err.message })
+        }
+    }
+    )
+})
+
+
+
 
 app.post('/allDoctorList', (req, res) => {
     getConnection().query("SELECT username, firstname, lastname, gender, age, email, phonenumber, specialization, photo FROM doctors", (err, result) => {

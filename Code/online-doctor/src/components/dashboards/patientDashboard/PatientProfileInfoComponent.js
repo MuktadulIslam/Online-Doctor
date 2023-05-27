@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PatientProfileOverviewComponent from './PatientProfileOverviewComponent';
 import PatientEditInfoComponent from './PatientEditInfoComponent';
-import PatientsSettingsComponent from './PatientsSettingsComponent';
+import AccountSettingsComponent from '../../userAccount/AccountSettingComponent';
 import ChangePasswordComponent from '../../userAccount/ChangePasswordComponent';
 
 export default function PatientProfileInfoComponent() {
@@ -60,7 +60,7 @@ export default function PatientProfileInfoComponent() {
                                     </li>
 
                                     <li className="nav-item">
-                                        <button className="nav-link" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<PatientsSettingsComponent/>) }}>Settings</button>
+                                        <button className="nav-link" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<AccountSettingsComponent/>) }}>Settings</button>
                                     </li>
 
                                     <li className="nav-item">

@@ -4,17 +4,25 @@ import Constants from '../../Constants';
 
 export default function DoctorListComponent(props) {
     const [allDoctorList, setAllDoctorList] = useState([]);
+    let ignore = false;
+
+    const loadFromServer = () => {
+         Axios.post(Constants.SERVER_IP + "allDoctorList", {
+         }).then((response) => {
+              console.log('success');
+              // console.log(response.data.message);
+              setAllDoctorList(response.data.message);
+              console.log('Doctor List');
+              console.log(allDoctorList);
+         }).catch((error) => {
+              console.log('error')
+         });
+     }
 
     useEffect(() => {
-        Axios.post(Constants.SERVER_IP + "allDoctorList", {
-        }).then((response) => {
-            console.log('success');
-            // console.log(response.data.message);
-            setAllDoctorList(response.data.message);
-        }).catch((error) => {
-            console.log('error')
-        });
-    }, []);
+         if (!ignore) {loadFromServer();}
+         ignore = true;
+     }, []);
 
     return (
         <>

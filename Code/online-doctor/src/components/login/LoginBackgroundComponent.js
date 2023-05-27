@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, Navigate  } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import Axios from 'axios';
 import { createBrowserHistory } from 'history';
 import Constants from '../../Constants';
@@ -19,6 +19,11 @@ export default function LoginBackgroundComponent() {
 
      const login = (e) => {
           e.preventDefault();
+          // const formData = new FormData();
+          // formData.append('username', username);
+          // formData.append('user', user);
+          // formData.append('password', password);
+          
           Axios.post(Constants.SERVER_IP + "login", {
                user: user,
                username: username,
@@ -27,8 +32,8 @@ export default function LoginBackgroundComponent() {
                console.log(response)
                if (response.data === 'Internal server error') {
                     <div className="col-md-12">
-                              <h5 style={{ color: 'red' }}>Internal server error</h5>
-                         </div>
+                         <h5 style={{ color: 'red' }}>Internal server error</h5>
+                    </div>
                }
 
                else if (response.data === 'Wrong username or password') {
@@ -42,7 +47,7 @@ export default function LoginBackgroundComponent() {
                else if (response.data == Constants.PROFILE_ARCHIVED) {
                     setNotificaiton(
                          <div className="col-md-12">
-                              <h5 style={{ color: 'red' }}>Account is Archived <br/>Please Make Request to Restore User Account</h5>
+                              <h5 style={{ color: 'red' }}>Account is Archived <br />Please Make Request to Restore User Account</h5>
                          </div>
                     )
                }
@@ -64,7 +69,7 @@ export default function LoginBackgroundComponent() {
                     setProfile("/doctorProfile");
                     localStorage.setItem('userData', JSON.stringify(response.data));
                }
-               else if(user == 'patients'){
+               else if (user == 'patients') {
                     // history.push("/patientProfile");
                     // window.location.reload();
                     setIsLoggedIn(true);

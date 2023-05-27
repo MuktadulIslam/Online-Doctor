@@ -249,8 +249,11 @@ app.post('/updateProfile', upload2.single('photo'), (req, res) => {
 
 
 
-app.post("/login", (req, res) => {
-    const { user, username, password } = req.body;
+app.post('/login', (req, res) => {
+    // const { user, username, password } = req.body;
+    const user = req.body.user;
+    const username = req.body.username;
+    const password = req.body.password;
     let query;
     if (user == "doctors") {
         query = `SELECT * FROM doctors WHERE username = ? AND password = ?`;
@@ -261,8 +264,8 @@ app.post("/login", (req, res) => {
     else if (user == "admin") {
         query = `SELECT * FROM admin WHERE username = ? AND password = ?`;
     }
-
-    getConnection().query(query, [username, password], (err, result) => {
+    try {
+        getConnection().query(query, [username, password], (err, result) => {
             if (err) {
                 return res.send(message = "Internal server error");
             }
@@ -287,12 +290,14 @@ app.post("/login", (req, res) => {
                 delete result[0].password;
                 result[0].user = user;
 
-                res.send(result[0]);
+                return res.send(result[0]);
             } else {
-                res.send("Wrong username or password");
+                return res.send("Wrong username or password");
             }
-            console.log('hiii');
-    });
+        });
+    } catch (err) {
+        console.log('\n\nerr\n\n');
+    }
 });
 
 

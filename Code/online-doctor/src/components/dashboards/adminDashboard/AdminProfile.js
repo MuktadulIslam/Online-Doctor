@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
+import Constants from '../../../Constants';
+import Axios from 'axios';
 
 import AdminProfileInfoComponent from './AdminProfileInfoComponent';
-import AdminEditInfoComponent from './AdminEditInfoComponent';
 import RemoveUserAccountComponent from './RemoveUserAccountComponent';
 import ComplainBoxComponent from './ComplainBoxComponent';
 import UpdateDiseaseListComponent from './UpdateDiseaseListComponent';
@@ -11,16 +12,29 @@ import DoctorListComponent from '../../allDoctorList/DoctorListComponent';
 import FooterComponent from '../../FooterComponent';
 
 export default function PatientProfile(props) {
-    const [sidebarVisible, setSidebarVisible] = useState(false);
-    const [mainBackground, setMainBackground] = useState(<AdminProfileInfoComponent />);
 
-    const sidebarToggler = () => {
-        setSidebarVisible(!sidebarVisible);
-    };
+    const [sidebarVisible, setSidebarVisible] = useState(false);
+    const [mainBackground, setMainBackground] = useState('');
+    let ignore = false;
+
+    const loadFromServer = () => {
+        const userInfo = JSON.parse(localStorage.getItem('userData'));
+        Axios.post(Constants.SERVER_IP + "getAccountInfo", {
+            user: userInfo.user,
+            username: userInfo.username,
+            password: userInfo.password,
+        }).then((response) => {
+            if (response.data != 'Internal server error') {
+                localStorage.setItem('userData', JSON.stringify(response.data));
+                setMainBackground(<AdminProfileInfoComponent/>);
+            }
+        })
+    }
 
     useEffect(() => {
-        // console.log('hello')
-    }, [mainBackground]);
+        if (!ignore) {loadFromServer();}
+        ignore = true;
+    }, []);
 
     return (
         <nav className={sidebarVisible ? 'toggle-sidebar' : ''}>
@@ -31,7 +45,7 @@ export default function PatientProfile(props) {
                         <img src="assets/img/logo.png" alt="" />
                         <span >Online Doctor</span>
                     </a>
-                    <i className="bi bi-list toggle-sidebar-btn" onClick={sidebarToggler}></i>
+                    <i className="bi bi-list toggle-sidebar-btn" onClick={()=> setSidebarVisible(!sidebarVisible)}></i>
                 </div>
                 {/* <!-- End Logo --> */}
 
@@ -45,14 +59,14 @@ export default function PatientProfile(props) {
 
                 <ul className="sidebar-nav" id="sidebar-nav">
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<AdminProfileInfoComponent />)}>
+                        <Link className="nav-link collapsed"  onClick={() => {setMainBackground(<AdminProfileInfoComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-person-circle"></i>
                             <span>Profile</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<RemoveUserAccountComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<RemoveUserAccountComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-x-square"></i>
                             <span>Remove User Account</span>
                         </Link>
@@ -60,7 +74,7 @@ export default function PatientProfile(props) {
 
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<ComplainBoxComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<ComplainBoxComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-box-seam"></i>
                             <span>Complain Box</span>
                         </Link>
@@ -68,7 +82,7 @@ export default function PatientProfile(props) {
 
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<UpdateDiseaseListComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<UpdateDiseaseListComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-box-arrow-up"></i>
                             <span>Update Disease List</span>
                         </Link>
@@ -76,7 +90,7 @@ export default function PatientProfile(props) {
 
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<PatientListComponent/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<PatientListComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-journal-text"></i>
                             <span>All Patient List</span>
                         </Link>
@@ -84,7 +98,7 @@ export default function PatientProfile(props) {
 
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<DoctorListComponent pageName='AdminProfile'/>)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<DoctorListComponent pageName='AdminProfile'/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-journal-text"></i>
                             <span>All Doctors List</span>
                         </Link>

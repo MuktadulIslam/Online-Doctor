@@ -27,7 +27,6 @@ export default function PatientProfile() {
         }).then((response) => {
             if (response.data != 'Internal server error') {
                 localStorage.setItem('userData', JSON.stringify(response.data));
-                console.log(response.data);
                 setMainBackground(<PatientProfileInfoComponent/>);
             }
         })
