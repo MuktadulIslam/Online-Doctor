@@ -29,7 +29,7 @@ export default function DoctorListComponent(props) {
             <div style={{padding: '20px'}}>
                 {/* <button onClick={getDoctorList}>Click</button> */}
                 <div className="pagetitle">
-                    <h1>Data Tables</h1>
+                    <h1>Data Table</h1>
                     <nav>
                         <ol className="breadcrumb">
                             <li className="breadcrumb-item">{props.pageName}</li>
@@ -42,7 +42,7 @@ export default function DoctorListComponent(props) {
 
                 <div className="card">
                     <div className="card-body">
-                        <h5 className="card-title">Doctors Datatables</h5>
+                        <h5 className="card-title">Doctors Datatable</h5>
 
                         {/* <!-- Table with stripped rows --> */}
                         <table className="table datatable">

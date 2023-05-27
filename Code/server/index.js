@@ -455,6 +455,72 @@ app.post('/allDoctorList', (req, res) => {
 })
 
 
+app.post('/allAppointments', (req, res) => {
+   
+    const query = "SELECT DISTINCT appointments.appoinementID, appointments.date, appointments.reminder, doctors.firstname, doctors.lastname, doctors.gender, doctors.specialization, doctors.username from appointments, doctors WHERE appointments.patientID = ? AND appointments.doctorID = doctors.username ORDER BY appointments.date DESC";
+    // const query = "SELECT * from appointments";
+
+    const patientName = req.body.patient;
+    getConnection().query(query, [patientName], (err, result) => {
+        let appointmentList = [];
+        let reminderStatus = 'On';
+        result.forEach((appointment) => {
+
+            if(appointment.reminder == 1) reminderStatus = 'On';
+            else reminderStatus = 'Off';
+            appointmentList.push({
+                appoinementID: appointment.appoinementID,
+                date: appointment.date,
+                reminder: reminderStatus,
+                doctorName: appointment.firstname + ' ' + appointment.lastname,
+                gender: appointment.gender,
+                specialization: appointment.specialization,
+                doctorID: appointment.username
+            });
+        });
+
+        // console.log(appointmentList);
+        if (result) {
+            res.send({ message: appointmentList});
+        } else {
+            res.send({ message: err.message })
+        }
+    }
+    )
+})
+
+
+app.post('/doctorAllAppointments', (req, res) => {
+   
+    const query = "SELECT DISTINCT appointments.appoinementID, appointments.date, patients.firstname, patients.lastname, patients.gender, patients.email, patients.username from appointments, patients WHERE appointments.doctorID = ? AND appointments.patientID = patients.username ORDER BY appointments.date DESC";
+
+    const doctorName = req.body.doctor;
+    getConnection().query(query, [doctorName], (err, result) => {
+        let appointmentList = [];
+        result.forEach((appointment) => {
+            appointmentList.push({
+                appoinementID: appointment.appoinementID,
+                date: appointment.date,
+                patientName: appointment.firstname + ' ' + appointment.lastname,
+                gender: appointment.gender,
+                patientEmail: appointment.email,
+                patientID: appointment.username
+            });
+        });
+
+        // console.log(result);
+        if (result) {
+            res.send({ message: appointmentList});
+        } else {
+            res.send({ message: err.message })
+        }
+    }
+    )
+})
+
+
+
+
 app.listen(3001, () => {
     console.log("Running backend server on port 3001");
 });

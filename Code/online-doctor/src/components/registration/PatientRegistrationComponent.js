@@ -74,19 +74,19 @@ export default function DoctorRegistrationComponent() {
                }
           });
 
-          // setFirstName('');
-          // setLastName('');
-          // setAge(0);
-          // setGender('');
-          // setEmail('');
-          // setPhoneNumber('');
-          // setFatherName('');
-          // setMotherName('');
-          // setPhoto('');
-          // setUsername('');
-          // setPassword('');
-          // setConfirmPassword('');
-          // document.getElementById("regForm").reset();
+          setFirstName('');
+          setLastName('');
+          setAge(0);
+          setGender('');
+          setEmail('');
+          setPhoneNumber('');
+          setFatherName('');
+          setMotherName('');
+          setPhoto('');
+          setUsername('');
+          setPassword('');
+          setConfirmPassword('');
+          document.getElementById("regForm").reset();
      }
 
 

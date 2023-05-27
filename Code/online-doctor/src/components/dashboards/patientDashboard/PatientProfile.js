@@ -7,7 +7,7 @@ import DeleteAccountComponent from '../../userAccount/DeleteAccountComponent';
 import MakeComplain from '../../complain_feedback/MakeComplainComponent';
 import BookAppointmentComponent from '../../appointment/BookAppointmentComponent';
 import PatientProfileInfoComponent from '../patientDashboard/PatientProfileInfoComponent';
-import PatientAppointmentHistoryComponent from '../patientDashboard/PatientAppointmentHistoryComponent';
+import PatientAppointmentHistoryComponent from '../../appointment/PatientAppointmentHistoryComponent';
 import DoctorListComponent from '../../allDoctorList/DoctorListComponent';
 import ContactUsBackgroundComponent from '../../contactUs/ContactUsBackgroundComponent';
 import FooterComponent from '../../FooterComponent';

@@ -152,7 +152,7 @@ import Axios from 'axios';
 // import PredictionComponent from '../../prediction/PredictionComponent';
 
 import DoctorProfileInfoComponent from './DoctorProfileInfoComponent';
-import DoctorAppointmentListComponent from './DoctorAppointmentListComponent';
+import DoctorAppointmentListComponent from '../../appointment/DoctorAppointmentListComponent';
 import DoctorListComponent from '../../allDoctorList/DoctorListComponent';
 import MakeComplainComponent from '../../complain_feedback/MakeComplainComponent';
 import DeleteAccountComponent from '../../userAccount/DeleteAccountComponent';
