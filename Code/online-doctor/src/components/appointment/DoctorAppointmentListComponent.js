@@ -1,30 +1,61 @@
 import React, { useState, useEffect } from 'react'
 import Axios from 'axios';
 import Constants from '../../Constants';
+import ErrorPopup from '../../popView/ErrorPopup';
+import SuccessPopup from '../../popView/SuccessPopup';
 
-export default function DoctorAppointmentListComponent(props) {
+export default function DoctorAppointmentListComponent() {
     const [allAppointments, setAllAppointments] = useState([]);
+    const [notification, setNotification] = useState(false);
+    const [showPopupComponent, setShowPopupComponent] = useState(true);
+
     const userInfo = JSON.parse(localStorage.getItem('userData'));
     let ignore = false;
 
+    const cancelAppointment = (appointmentID) => {
+        setShowPopupComponent(true);
+
+        const password = window.prompt("Do you want to cancel this appointment?\nIf you want then enter your password for conformation", "password");
+
+        if(password == null) return;
+
+        Axios.post(Constants.SERVER_IP + "cancelAppointment", {
+            username: userInfo.username,
+            user: userInfo.user,
+            password: password,
+            appointmentID: appointmentID
+        }).then((response) => {
+            if (response.data.message == 'Password does not match') {
+                setNotification(<ErrorPopup message='Password does not match' />)
+            }
+            else if (response.data.message == 'Cancelation successfully completed') {
+                loadFromServer();
+                setNotification(<SuccessPopup message='Cancelation successfully completed' />);
+            }
+            else {
+                setNotification(<ErrorPopup message='Failed to cancel the appointment for unknown reason' />)
+            }
+        }).catch((error) => {
+            console.log('error')
+        });
+    }
+
     const loadFromServer = () => {
-        console.log('hello')
-         Axios.post(Constants.SERVER_IP + "doctorAllAppointments", {doctor: userInfo.username}).then((response) => {
-              setAllAppointments(response.data.message);
-         }).catch((error) => {
-              console.log('error')
-         });
-     }
+        Axios.post(Constants.SERVER_IP + "doctorAllAppointments", { doctor: userInfo.username }).then((response) => {
+            setAllAppointments(response.data.message);
+        }).catch((error) => {
+            console.log('error')
+        });
+    }
 
     useEffect(() => {
-         if (!ignore) {loadFromServer();}
-         ignore = true;
-     }, []);
+        if (!ignore) { loadFromServer(); }
+        ignore = true;
+    }, []);
 
     return (
         <>
-            <div style={{padding: '20px'}}>
-                {/* <button onClick={getAppointments}>Click</button> */}
+            <div style={{ padding: '20px' }}>
                 <div className="pagetitle">
                     <h1>Data Tables</h1>
                     <nav>
@@ -52,6 +83,7 @@ export default function DoctorAppointmentListComponent(props) {
                                     <th scope="col">Patient's Gender</th>
                                     <th scope="col">Patient's Email</th>
                                     <th scope="col">Patient's Profile</th>
+                                    <th scope="col">Cancel Appointment</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -65,6 +97,7 @@ export default function DoctorAppointmentListComponent(props) {
                                         <td>{appointment.gender} </td>
                                         <td>{appointment.patientEmail} </td>
                                         <td>{appointment.patientID}</td>
+                                        <td><button className="btn btn-danger" onClick={(e) => cancelAppointment(appointment.appoinementID)}>Cancel</button></td>
                                     </tr>
                                 ))
                                 }
@@ -74,6 +107,7 @@ export default function DoctorAppointmentListComponent(props) {
                         {/* <!-- End Table with stripped rows --> */}
 
                     </div>
+                    {showPopupComponent && notification}
                 </div>
             </div>
         </>

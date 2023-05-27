@@ -29,7 +29,6 @@ export default function LoginBackgroundComponent() {
                username: username,
                password: password,
           }).then((response) => {
-               console.log(response)
                if (response.data === 'Internal server error') {
                     <div className="col-md-12">
                          <h5 style={{ color: 'red' }}>Internal server error</h5>

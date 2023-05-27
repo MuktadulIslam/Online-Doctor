@@ -1,11 +1,46 @@
 import React, { useState, useEffect } from 'react'
 import Axios from 'axios';
 import Constants from '../../Constants';
+import ErrorPopup from '../../popView/ErrorPopup';
+import SuccessPopup from '../../popView/SuccessPopup';
 
 export default function PatientAppointmentHistoryComponent(props) {
     const [allAppointments, setAllAppointments] = useState([]);
     const userInfo = JSON.parse(localStorage.getItem('userData'));
+    const [notification, setNotification] = useState(false);
+    const [showPopupComponent, setShowPopupComponent] = useState(true);
+
     let ignore = false;
+
+
+    const cancelAppointment = (appointmentID) => {
+        setShowPopupComponent(true);
+
+        const password = window.prompt("Do you want to cancel this appointment?\nIf you want then enter your password for conformation", "password");
+
+        if(password == null) return;
+
+        Axios.post(Constants.SERVER_IP + "cancelAppointment", {
+            username: userInfo.username,
+            user: userInfo.user,
+            password: password,
+            appointmentID: appointmentID
+        }).then((response) => {
+            if (response.data.message == 'Password does not match') {
+                setNotification(<ErrorPopup message='Password does not match' />)
+            }
+            else if (response.data.message == 'Cancelation successfully completed') {
+                loadFromServer();
+                setNotification(<SuccessPopup message='Cancelation successfully completed' />);
+            }
+            else {
+                setNotification(<ErrorPopup message='Failed to cancel the appointment for unknown reason' />)
+            }
+        }).catch((error) => {
+            console.log('error')
+        });
+    }
+
 
     const loadFromServer = () => {
         console.log('hello')
@@ -53,6 +88,7 @@ export default function PatientAppointmentHistoryComponent(props) {
                                     <th scope="col">Doctor's Gender</th>
                                     <th scope="col">Specialization</th>
                                     <th scope="col">Doctor's Profile</th>
+                                    <th scope="col">Cancel Appointment</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -67,6 +103,7 @@ export default function PatientAppointmentHistoryComponent(props) {
                                         <td>{appointment.gender} </td>
                                         <td>{appointment.specialization} </td>
                                         <td>{appointment.doctorID}</td>
+                                        <td><button className="btn btn-danger" onClick={(e) => cancelAppointment(appointment.appoinementID)}>Cancel</button></td>
                                     </tr>
                                 ))
                                 }
@@ -76,6 +113,7 @@ export default function PatientAppointmentHistoryComponent(props) {
                         {/* <!-- End Table with stripped rows --> */}
 
                     </div>
+                    {showPopupComponent && notification}
                 </div>
             </div>
         </>

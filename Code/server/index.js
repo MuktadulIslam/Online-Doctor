@@ -363,7 +363,7 @@ app.post('/bookAppointment', (req, res) => {
             getConnection().query("INSERT INTO appointments (appoinementID, patientID, doctorID, date,reminder) VALUES (?, ?, ?, ?, ?)", [appointmentID, patient, doctor, date, reminder],
                 (err, result) => {
                     if (result) {
-                        res.send({message: 'Booking successfully completed'});
+                        res.send({ message: 'Booking successfully completed' });
                     } else {
                         res.send({ message: "ENTER CORRECT ASKED DETAILS!" })
                     }
@@ -456,7 +456,7 @@ app.post('/allDoctorList', (req, res) => {
 
 
 app.post('/allAppointments', (req, res) => {
-   
+
     const query = "SELECT DISTINCT appointments.appoinementID, appointments.date, appointments.reminder, doctors.firstname, doctors.lastname, doctors.gender, doctors.specialization, doctors.username from appointments, doctors WHERE appointments.patientID = ? AND appointments.doctorID = doctors.username ORDER BY appointments.date DESC";
     // const query = "SELECT * from appointments";
 
@@ -466,7 +466,7 @@ app.post('/allAppointments', (req, res) => {
         let reminderStatus = 'On';
         result.forEach((appointment) => {
 
-            if(appointment.reminder == 1) reminderStatus = 'On';
+            if (appointment.reminder == 1) reminderStatus = 'On';
             else reminderStatus = 'Off';
             appointmentList.push({
                 appoinementID: appointment.appoinementID,
@@ -481,7 +481,7 @@ app.post('/allAppointments', (req, res) => {
 
         // console.log(appointmentList);
         if (result) {
-            res.send({ message: appointmentList});
+            res.send({ message: appointmentList });
         } else {
             res.send({ message: err.message })
         }
@@ -491,7 +491,7 @@ app.post('/allAppointments', (req, res) => {
 
 
 app.post('/doctorAllAppointments', (req, res) => {
-   
+
     const query = "SELECT DISTINCT appointments.appoinementID, appointments.date, patients.firstname, patients.lastname, patients.gender, patients.email, patients.username from appointments, patients WHERE appointments.doctorID = ? AND appointments.patientID = patients.username ORDER BY appointments.date DESC";
 
     const doctorName = req.body.doctor;
@@ -510,13 +510,54 @@ app.post('/doctorAllAppointments', (req, res) => {
 
         // console.log(result);
         if (result) {
-            res.send({ message: appointmentList});
+            res.send({ message: appointmentList });
         } else {
             res.send({ message: err.message })
         }
     }
     )
 })
+
+
+app.post("/cancelAppointment", (req, res) => {
+    const user = req.body.user;
+    const username = req.body.username;
+    const password = req.body.password;
+    const appointmentID = req.body.appointmentID;
+
+    console.log(user,username, password, appointmentID);
+
+    let query1;
+    let query2;
+
+    if (user == "doctors") {
+        query1 = `SELECT username FROM doctors WHERE username = ? AND password = ?`;
+        query2 = 'DELETE from appointments WHERE appoinementID = ?';
+    }
+    else if (user == "patients") {
+        query1 = `SELECT username FROM patients WHERE username = ? AND password = ?`;
+        query2 = 'DELETE from appointments WHERE appoinementID = ?';
+    }
+
+
+    getConnection().query(query1, [username, password], (err, result) => {
+        if (result[0]) {
+            getConnection().query(query2, [appointmentID],
+                (err, result) => {
+                    if (result) {
+                        res.send({ message: 'Cancelation successfully completed' });
+                    } else {
+                        res.send({ message: "ENTER CORRECT ASKED DETAILS!" })
+                    }
+                }
+            )
+        }
+        else {
+            res.send({ message: "Password does not match" })
+        }
+    });
+});
+
 
 
 

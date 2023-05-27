@@ -204,42 +204,42 @@ export default function PatientProfile() {
 
                 <ul className="sidebar-nav" id="sidebar-nav">
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<DoctorProfileInfoComponent />)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<DoctorProfileInfoComponent />); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-person-circle"></i>
                             <span>Profile</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<DoctorAppointmentListComponent />)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<DoctorAppointmentListComponent />); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi-file-earmark-text"></i>
                             <span>Appointment List</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<DoctorListComponent pageName='DoctorProfile' />)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<DoctorListComponent pageName='DoctorProfile' />); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-journal-text"></i>
                             <span>All Doctors List</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<MakeComplainComponent />)}>
+                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<MakeComplainComponent />); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-file-earmark-medical"></i>
                             <span>Make Complain</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<DeleteAccountComponent />)}>
+                        <Link className="nav-link collapsed" onClick={() => { setMainBackground(<DeleteAccountComponent />); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-trash"></i>
                             <span>Delete Account</span>
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => setMainBackground(<ContactUsBackgroundComponent />)}>
+                        <Link className="nav-link collapsed" onClick={() => { setMainBackground(<ContactUsBackgroundComponent />); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-envelope"></i>
                             <span>Contact Us</span>
                         </Link>

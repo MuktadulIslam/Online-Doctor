@@ -9,11 +9,7 @@ export default function DoctorListComponent(props) {
     const loadFromServer = () => {
          Axios.post(Constants.SERVER_IP + "allDoctorList", {
          }).then((response) => {
-              console.log('success');
-              // console.log(response.data.message);
               setAllDoctorList(response.data.message);
-              console.log('Doctor List');
-              console.log(allDoctorList);
          }).catch((error) => {
               console.log('error')
          });
