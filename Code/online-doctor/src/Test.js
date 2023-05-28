@@ -1,41 +1,72 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-function MyComponent() {
-  const [imageSrc, setImageSrc] = useState('');
+export default function Test(props) {
+    const userInfo = props;
+    return (
+        <div style={{ padding: '20px' }}>
 
-  const handleImageUpload2 = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImageSrc(reader.result);
-    };
+            <div className="pagetitle">
+                <h1>Doctor's Profile</h1>
+                <nav>
+                    <ol className="breadcrumb">
+                        <li className="breadcrumb-item"><a href="index.html">AllDoctorList/</a></li>
+                        <li className="breadcrumb-item active">Profile</li>
+                    </ol>
+                </nav>
+            </div>
+            {/* <!-- End Page Title --> */}
 
-    reader.readAsDataURL(file);
-  };
+            <section className="section profile">
+                <div className="row">
+                    <div className="col-xl-4">
 
-  const handleClick = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.onchange = (event) => {
-      const file = event.target.files[0];
-      console.log(file);
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImageSrc(reader.result);
-      };
-  
-      reader.readAsDataURL(file);
-    };
+                        <div className="card">
+                            <div className="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-    input.click();
-  };
+                                {/* <img src="assets/img/profile-img.jpg" alt="Profile" className="rounded-circle" /> */}
+                                <img src={`data:image/png;base64, ${userInfo.photo}`} alt="Profile" />
+                                <h2>{userInfo.firstname + ' ' + userInfo.lastname}</h2>
+                                <h3>Web Designer</h3>
+                                <div className="social-links mt-2">
+                                    <a href="#" className="twitter"><i className="bi bi-twitter"></i></a>
+                                    <a href="#" className="facebook"><i className="bi bi-facebook"></i></a>
+                                    <a href="#" className="instagram"><i className="bi bi-instagram"></i></a>
+                                    <a href="#" className="linkedin"><i className="bi bi-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </div>
 
-  return (
-    <div>
-      <button onClick={handleClick}>Upload Image</button>
-      {imageSrc && <img src={imageSrc} alt="Uploaded" style={{width:'200px'}}/>}
-    </div>
-  );
+                    </div>
+
+                    <div className="col-xl-8">
+
+                        <div className="card">
+                            <div className="card-body pt-3">
+                                {/* <!-- Bordered Tabs --> */}
+                                <div className="nav nav-tabs nav-tabs-bordered">
+
+                                    {/* <li className="nav-item">
+                                        <button className="nav-link active" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<PatientProfileOverviewComponent/>) }}>Overview</button>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <button className="nav-link" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<PatientEditInfoComponent/>) }}> Edit Profile</button>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <button className="nav-link" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<AccountSettingsComponent/>) }}>Settings</button>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <button className="nav-link" data-bs-toggle="tab" onClick={() => { setProfileViewComponent(<ChangePasswordComponent/>) }}>Change Password</button>
+                                    </li> */}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    )
 }
-
-export default MyComponent;

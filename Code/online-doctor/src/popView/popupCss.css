@@ -71,3 +71,41 @@
 #error-popup button {
     background: #ff0000;
 }
+
+
+
+
+
+.open-profile-popup {
+    width: 1000px;
+    height: 700px;
+    background: #fff;
+    border-radius: 6px;
+    /* position: fixed; */
+    /* top: 50%;
+    left: 50%; */
+    transform: translate(-50%,-50%) scale(1);
+    text-align: center;
+    padding: 0 30px 30px;
+    color: #333;
+    transition: transform 0.4s,  top 0.4s;
+    transition: none;
+}
+
+
+.hide-profile-popup{
+    width: 1000px;
+    height: 700px;
+    background: #ffffff;
+    border-radius: 6px;
+    /* position: fixed; */
+    /* top: -50%;
+    left: 50%; */
+    transform: translate(-50%,-50%) scale(0);
+    text-align: center;
+    padding: 0 30px 30px;
+    color: #333;
+    transition: transform 0.4s,  top 0.4s;
+    /* visibility: hidden; */
+    border: 5px solid #6fd649;
+}

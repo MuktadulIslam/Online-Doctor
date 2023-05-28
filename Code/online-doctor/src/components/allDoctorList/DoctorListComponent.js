@@ -4,25 +4,40 @@ import Constants from '../../Constants';
 
 export default function DoctorListComponent(props) {
     const [allDoctorList, setAllDoctorList] = useState([]);
+
     let ignore = false;
 
+
+    const viewDoctorProfile = (DoctorUsername) => {
+        Axios.post(Constants.SERVER_IP + "getAccountInfo", {
+            user: 'doctors',
+            username: DoctorUsername,
+        }).then((response) => {
+            if (response.data != 'Internal server error') {
+                console.log(response.data);
+            }
+        })
+
+    }
+
     const loadFromServer = () => {
-         Axios.post(Constants.SERVER_IP + "allDoctorList", {
-         }).then((response) => {
-              setAllDoctorList(response.data.message);
-         }).catch((error) => {
-              console.log('error')
-         });
-     }
+        Axios.post(Constants.SERVER_IP + "allDoctorList", {
+        }).then((response) => {
+            setAllDoctorList(response.data.message);
+        }).catch((error) => {
+            console.log('error')
+        });
+    }
 
     useEffect(() => {
-         if (!ignore) {loadFromServer();}
-         ignore = true;
-     }, []);
+        if (!ignore) { loadFromServer(); }
+        ignore = true;
+    }, []);
 
     return (
         <>
-            <div style={{padding: '20px'}}>
+            <div style={{ padding: '20px' }}>
+
                 {/* <button onClick={getDoctorList}>Click</button> */}
                 <div className="pagetitle">
                     <h1>Data Table</h1>
@@ -63,7 +78,7 @@ export default function DoctorListComponent(props) {
                                         <td>{doctorInfo.gender} </td>
                                         <td>{doctorInfo.age} </td>
                                         <td>{doctorInfo.specialization} </td>
-                                        <td>{doctorInfo.username}</td>
+                                        <td><button className='btn' style={{ color: 'blue' }} onClick={(e) => { viewDoctorProfile(doctorInfo.username) }}>{doctorInfo.username}</button></td>
                                     </tr>
                                 ))
                                 }

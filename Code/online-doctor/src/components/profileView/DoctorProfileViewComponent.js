@@ -1,100 +1,105 @@
-import React from 'react'
+import React from 'react';
 
-export default function doctorProfileView() {
+export default function DoctorProfileViewComponent(props) {
+    const userInfo = props.userInfo;
     return (
-        <section class="bg-light">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 mb-4 mb-sm-5">
-                        <div class="card card-style1 border-0">
-                            <div class="card-body p-1-9 p-sm-2-3 p-md-6 p-lg-7">
-                                <div class="row align-items-center">
-                                    <div class="col-lg-6 mb-4 mb-lg-0">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="..."/>
-                                    </div>
-                                    <div class="col-lg-6 px-xl-10">
-                                        <div class="bg-secondary d-lg-inline-block py-1-9 px-1-9 px-sm-6 mb-1-9 rounded">
-                                            <h3 class="h2 text-white mb-0">John mark Doe Kyzer</h3>
-                                            <span class="text-primary">Coach</span>
-                                        </div>
-                                        <ul class="list-unstyled mb-1-9">
-                                            <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Position:</span> Coach</li>
-                                            <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Experience:</span> 10 Years</li>
-                                            <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Email:</span> edith@mail.com</li>
-                                            <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Website:</span> www.example.com</li>
-                                            <li class="display-28"><span class="display-26 text-secondary me-2 font-weight-600">Phone:</span> 507 - 541 - 4567</li>
-                                        </ul>
-                                        <ul class="social-icon-style1 list-unstyled mb-0 ps-0">
-                                            <li><a href="#!"><i class="ti-twitter-alt"></i></a></li>
-                                            <li><a href="#!"><i class="ti-facebook"></i></a></li>
-                                            <li><a href="#!"><i class="ti-pinterest"></i></a></li>
-                                            <li><a href="#!"><i class="ti-instagram"></i></a></li>
-                                        </ul>
-                                    </div>
+        <div style={{ padding: '20px' }}>
+
+            <div className="pagetitle">
+                <h1>Doctor's Profile</h1>
+                <nav>
+                    <ol className="breadcrumb">
+                        <li className="breadcrumb-item"><a href="index.html">AllDoctorList/</a></li>
+                        <li className="breadcrumb-item active">Profile</li>
+                    </ol>
+                </nav>
+            </div>
+            {/* <!-- End Page Title --> */}
+
+            <section className="section profile">
+                <div className="row">
+                    <div className="col-xl-4">
+
+                        <div className="card">
+                            <div className="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+                                {/* <img src="assets/img/profile-img.jpg" alt="Profile" className="rounded-circle" /> */}
+                                <img src={`data:image/png;base64, ${userInfo.photo}`} alt="Profile" />
+                                <h2>{userInfo.firstname + ' ' + userInfo.lastname}</h2>
+                                <h3>{userInfo.specialization}</h3>
+                                <div className="social-links mt-2">
+                                    <a href="#" className="twitter"><i className="bi bi-twitter"></i></a>
+                                    <a href="#" className="facebook"><i className="bi bi-facebook"></i></a>
+                                    <a href="#" className="instagram"><i className="bi bi-instagram"></i></a>
+                                    <a href="#" className="linkedin"><i className="bi bi-linkedin"></i></a>
                                 </div>
                             </div>
                         </div>
+
                     </div>
-                    <div class="col-lg-12 mb-4 mb-sm-5">
-                        <div>
-                            <span class="section-title text-primary mb-3 mb-sm-4">About Me</span>
-                            <p>Edith is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                            <p class="mb-0">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed.</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="row">
-                            <div class="col-lg-12 mb-4 mb-sm-5">
-                                <div class="mb-4 mb-sm-5">
-                                    <span class="section-title text-primary mb-3 mb-sm-4">Skill</span>
-                                    <div class="progress-text">
-                                        <div class="row">
-                                            <div class="col-6">Driving range</div>
-                                            <div class="col-6 text-end">80%</div>
+
+                    <div className="col-xl-8">
+
+                        <div className="card">
+                            <div className="card-body pt-3">
+                                {/* <!-- Bordered Tabs --> */}
+                                <div className="nav nav-tabs nav-tabs-bordered">
+
+                                    <div className="tab-pane fade show active profile-overview" id="profile-overview">
+                                        <h5 className="card-title">Profile Details</h5>
+
+                                        <div className="row">
+                                            <div className="col-lg-3 col-md-8 label ">Full Name</div>
+                                            <div className="col-lg-9 col-md-4">{userInfo.firstname + ' ' + userInfo.lastname}</div>
                                         </div>
-                                    </div>
-                                    <div class="custom-progress progress progress-medium mb-3" style="height: 4px;">
-                                        <div class="animated custom-bar progress-bar slideInLeft bg-secondary" style="width:80%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar"></div>
-                                    </div>
-                                    <div class="progress-text">
-                                        <div class="row">
-                                            <div class="col-6">Short Game</div>
-                                            <div class="col-6 text-end">90%</div>
+
+                                        <div className="row">
+                                            <div className="col-lg-3 col-md-8 label">User Name</div>
+                                            <div className="col-lg-9 col-md-4">{userInfo.username}</div>
                                         </div>
-                                    </div>
-                                    <div class="custom-progress progress progress-medium mb-3" style="height: 4px;">
-                                        <div class="animated custom-bar progress-bar slideInLeft bg-secondary" style="width:90%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="70" role="progressbar"></div>
-                                    </div>
-                                    <div class="progress-text">
-                                        <div class="row">
-                                            <div class="col-6">Side Bets</div>
-                                            <div class="col-6 text-end">50%</div>
+
+                                        <div className="row">
+                                            <div className="col-lg-3 col-md-8 label">Email</div>
+                                            <div className="col-lg-9 col-md-4">{userInfo.email}</div>
                                         </div>
-                                    </div>
-                                    <div class="custom-progress progress progress-medium mb-3" style="height: 4px;">
-                                        <div class="animated custom-bar progress-bar slideInLeft bg-secondary" style="width:50%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="70" role="progressbar"></div>
-                                    </div>
-                                    <div class="progress-text">
-                                        <div class="row">
-                                            <div class="col-6">Putting</div>
-                                            <div class="col-6 text-end">60%</div>
+
+                                        <div className="row">
+                                            <div className="col-lg-3 col-md-8 label">Phone Number</div>
+                                            <div className="col-lg-9 col-md-4">{userInfo.phonenumber}</div>
                                         </div>
+
+                                        <div className="row">
+                                            <div className="col-lg-3 col-md-8 label">Gender</div>
+                                            <div className="col-lg-9 col-md-4">{userInfo.gender}</div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-lg-3 col-md-8 label">Age</div>
+                                            <div className="col-lg-9 col-md-4">{userInfo.age}</div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-lg-3 col-md-8 label">Doctor Registration Number</div>
+                                            <div className="col-lg-9 col-md-4">{userInfo.doctorRegNumber}</div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-lg-3 col-md-8 label">Specialization</div>
+                                            <div className="col-lg-9 col-md-4">{userInfo.specialization}</div>
+                                        </div>
+
+                                        <div className="text-center">
+                                            <button type="submit" className="btn btn-primary">Save Changes</button>
+                                        </div>
+
                                     </div>
-                                    <div class="custom-progress progress progress-medium" style="height: 4px;">
-                                        <div class="animated custom-bar progress-bar slideInLeft bg-secondary" style="width:60%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="70" role="progressbar"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <span class="section-title text-primary mb-3 mb-sm-4">Education</span>
-                                    <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.</p>
-                                    <p class="mb-1-9">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
 
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
     )
 }

@@ -215,20 +215,6 @@ app.post('/updateProfile', upload2.single('photo'), (req, res) => {
             query += ` WHERE username = ?`;
             params.push(username);
 
-            // console.log(query);
-            // console.log(params);
-            // console.log('\n\n');
-            // console.log('firstname= ', firstname);
-            // console.log('lastname= ', lastname);
-            // console.log('gender= ', gender);
-            // console.log('age= ', age);
-            // console.log('email= ', email);
-            // console.log('fathername= ', fathername);
-            // console.log('mothername= ', mothername);
-            // console.log('username= ', username);
-            // console.log('\n\n\n');
-
-
             getConnection().query(query, params,
                 (err, result) => {
                     if (result) {
@@ -427,9 +413,16 @@ app.post('/allDoctorList', (req, res) => {
     getConnection().query("SELECT username, firstname, lastname, gender, age, email, phonenumber, specialization, photo FROM doctors", (err, result) => {
         let doctorList = [];
         result.forEach((doctorInfo) => {
-            const photoPath = doctorInfo.photo; // Assuming the 'photo' field contains the file path
-            const photoData = fs.readFileSync(photoPath);
-            const base64Photo = photoData.toString('base64');
+            let base64Photo;
+            try {
+                const photoPath = doctorInfo.photo; // Assuming the 'photo' field contains the file path
+                const photoData = fs.readFileSync(photoPath);
+                base64Photo = photoData.toString('base64');
+            } catch (err) {
+                const photoPath = 'defaultProfilePic.png'; // Assuming the 'photo' field contains the file path
+                const photoData = fs.readFileSync(photoPath);
+                base64Photo = photoData.toString('base64');
+            }
 
             doctorList.push({
                 username: doctorInfo.username,
@@ -447,6 +440,46 @@ app.post('/allDoctorList', (req, res) => {
         // console.log(doctorList);
         if (result) {
             res.send({ message: doctorList });
+        } else {
+            res.send({ message: err.message })
+        }
+    }
+    )
+})
+
+
+
+app.post('/allPatientList', (req, res) => {
+    getConnection().query("SELECT username, firstname, lastname, gender, age, email, fathername, mothername, photo FROM patients", (err, result) => {
+        let patientList = [];
+        result.forEach((patientInfo) => {
+            let base64Photo;
+            try {
+                const photoPath = patientInfo.photo; // Assuming the 'photo' field contains the file path
+                const photoData = fs.readFileSync(photoPath);
+                base64Photo = photoData.toString('base64');
+            } catch (err) {
+                const photoPath = 'defaultProfilePic.png'; // Assuming the 'photo' field contains the file path
+                const photoData = fs.readFileSync(photoPath);
+                base64Photo = photoData.toString('base64');
+            }
+
+            patientList.push({
+                username: patientInfo.username,
+                firstname: patientInfo.firstname,
+                lastname: patientInfo.lastname,
+                gender: patientInfo.gender,
+                age: patientInfo.age,
+                email: patientInfo.email,
+                mothername: patientInfo.mothername,
+                mothername: patientInfo.fathername,
+                photo: base64Photo,
+            });
+        });
+
+        // console.log(doctorList);
+        if (result) {
+            res.send({ message: patientList });
         } else {
             res.send({ message: err.message })
         }
@@ -525,7 +558,7 @@ app.post("/cancelAppointment", (req, res) => {
     const password = req.body.password;
     const appointmentID = req.body.appointmentID;
 
-    console.log(user,username, password, appointmentID);
+    console.log(user, username, password, appointmentID);
 
     let query1;
     let query2;
