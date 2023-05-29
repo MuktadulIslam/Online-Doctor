@@ -4,7 +4,6 @@ import Constants from '../../../Constants';
 import Axios from 'axios';
 
 import DeleteAccountComponent from '../../userAccount/DeleteAccountComponent';
-import MakeComplain from '../../complain_feedback/MakeComplainComponent';
 import BookAppointmentComponent from '../../appointment/BookAppointmentComponent';
 import PatientProfileInfoComponent from '../patientDashboard/PatientProfileInfoComponent';
 import PatientAppointmentHistoryComponent from '../../appointment/PatientAppointmentHistoryComponent';
@@ -89,13 +88,6 @@ export default function PatientProfile() {
                         <Link className="nav-link collapsed" onClick={() => {setMainBackground(<BookAppointmentComponent/>); setSidebarVisible(!sidebarVisible);}}>
                             <i className="bi bi-bookmark-plus"></i>
                             <span>Book Appointment</span>
-                        </Link>
-                    </li>
-
-                    <li className="nav-item">
-                        <Link className="nav-link collapsed" onClick={() => {setMainBackground(<MakeComplain />); setSidebarVisible(!sidebarVisible);}}>
-                            <i className="bi bi-file-earmark-medical"></i>
-                            <span>Make Complain</span>
                         </Link>
                     </li>
 

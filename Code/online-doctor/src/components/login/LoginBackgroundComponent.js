@@ -19,11 +19,6 @@ export default function LoginBackgroundComponent() {
 
      const login = (e) => {
           e.preventDefault();
-          // const formData = new FormData();
-          // formData.append('username', username);
-          // formData.append('user', user);
-          // formData.append('password', password);
-          
           Axios.post(Constants.SERVER_IP + "login", {
                user: user,
                username: username,

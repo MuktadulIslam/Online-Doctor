@@ -6,6 +6,9 @@ import HomePage from './components/homePage/HomePage'
 import PatientProfile from './components/dashboards/patientDashboard/PatientProfile';
 import DoctorProfile from './components/dashboards/doctorDashboard/DoctorProfile';
 import AdminProfile from './components/dashboards/adminDashboard/AdminProfile';
+import PatientPrivateRoute from './privateRoutes/PatientPrivateRoute';
+import DoctorPrivateRoute from './privateRoutes/DoctorPrivateRoute';
+import AdminPrivateRoute from './privateRoutes/AdminPrivateRoute';
 
 
 
@@ -15,9 +18,15 @@ function App() {
             <Router>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/patientProfile" element={<PatientProfile />} />
-                    <Route path="/doctorProfile" element={<DoctorProfile />} />
+                    <Route element={<PatientPrivateRoute />}>
+                        <Route path="/patientProfile" element={<PatientProfile />} exact />
+                    </Route>
+                    <Route element={<DoctorPrivateRoute />}>
+                        <Route path="/doctorProfile" element={<DoctorProfile />} />
+                    </Route>
+                    <Route element={<AdminPrivateRoute/>}>
                     <Route path="/adminProfile" element={<AdminProfile />} />
+                    </Route>
                 </Routes>
             </Router>
         </div>
